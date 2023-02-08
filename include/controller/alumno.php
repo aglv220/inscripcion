@@ -49,8 +49,7 @@ class alumno extends DB{
     }
 
     //MODIFICADO CON CÓDIGO MODULAR
-    public function saveAlumnoByCurso($dni, $fecnac, $entidad, $pliego, $ipliego, $uejecutora, $iuejecutora, $establecimiento, $iestablecimiento, $region,
-                                    $nombres, $apepat, $apemat, $apecas, $correo, $celular, $fecha, $curso, $ubigeo, $profesion, $reglab, $condlab, $icondlab, $ruc, $tipo, $file, $cod_modular){
+    public function saveAlumnoByCurso($dni, $fecnac, $entidad, $pliego, $ipliego, $uejecutora, $iuejecutora, $establecimiento, $iestablecimiento, $region, $nombres, $apepat, $apemat, $apecas, $correo, $celular, $fecha, $curso, $ubigeo, $profesion, $reglab, $condlab, $icondlab, $ruc, $tipo, $file, $cod_modular, $pais){
 
         $conn = $this->connect();
 
@@ -61,9 +60,7 @@ class alumno extends DB{
             );
         }
         
-        $query = $conn->prepare('CALL registro_alumno(:dni, :fecnac, :nombres, :apepat, :apemat, :apecas, :correo, :celular, :fecha, :entidad, :region, :curso, 
-                                :ipliego, :pliego, :iuejecutora, :uejecutora, :iestablecimiento, :establecimiento, :ubigeo, :profesion, :reglab, :icondlab, :condlab, :ruc, :tipo, :file, :cod_modular, 
-                                @mensaje, @statu);');
+        $query = $conn->prepare('CALL registro_alumno(:dni, :fecnac, :nombres, :apepat, :apemat, :apecas, :correo, :celular, :fecha, :entidad, :region, :curso, :ipliego, :pliego, :iuejecutora, :uejecutora, :iestablecimiento, :establecimiento, :ubigeo, :profesion, :reglab, :icondlab, :condlab, :ruc, :tipo, :file, :cod_modular, :pais, @mensaje, @statu);');
 
         $query->bindParam(":dni", $dni);
         $query->bindParam(":fecnac", $fecnac);
@@ -90,10 +87,11 @@ class alumno extends DB{
         $query->bindParam(":icondlab", $icondlab);
         $query->bindParam(":ruc", $ruc);
         $query->bindParam(":tipo", $tipo);
-        $query->bindParam(":file", $file);
-
+        $query->bindParam(":file", $file);       
         //CODIGO MODULAR
         $query->bindParam(":cod_modular", $cod_modular);
+        //IDPAIS
+        $query->bindParam(":pais", $pais);
 
         try {
             $query->execute();

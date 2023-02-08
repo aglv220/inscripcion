@@ -77,6 +77,15 @@
             echo json_encode($data, JSON_FORCE_OBJECT);
         break;
 
+        case 'getpais':
+            require_once($CNG->dirroot .'/include/controller/pais.php');
+            $p = new paises();
+            $data = $p->getAllPaises();
+    
+            header('Content-type: application/json; charset=utf-8');
+            echo json_encode($data, JSON_FORCE_OBJECT);
+        break;
+
         case 'getCursoSet':
             require_once($CNG->dirroot .'/include/controller/curso.php');
             $p = new cursos();
