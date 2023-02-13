@@ -49,7 +49,7 @@ class alumno extends DB{
     }
 
     //MODIFICADO CON CÓDIGO MODULAR
-    public function saveAlumnoByCurso($dni, $fecnac, $entidad, $pliego, $ipliego, $uejecutora, $iuejecutora, $establecimiento, $iestablecimiento, $region, $nombres, $apepat, $apemat, $apecas, $correo, $celular, $fecha, $curso, $ubigeo, $profesion, $reglab, $condlab, $icondlab, $ruc, $tipo, $file, $cod_modular, $pais){
+    public function saveAlumnoByCurso($dni, $fecnac, $entidad, $pliego, $ipliego, $uejecutora, $iuejecutora, $establecimiento, $iestablecimiento, $region, $nombres, $apepat, $apemat, $apecas, $correo, $celular, $fecha, $curso, $ubigeo, $profesion, $reglab, $condlab, $icondlab, $ruc, $tipo, $file, $cod_modular, $pais, $extranjero){
 
         $conn = $this->connect();
 
@@ -60,7 +60,7 @@ class alumno extends DB{
             );
         }
         
-        $query = $conn->prepare('CALL registro_alumno(:dni, :fecnac, :nombres, :apepat, :apemat, :apecas, :correo, :celular, :fecha, :entidad, :region, :curso, :ipliego, :pliego, :iuejecutora, :uejecutora, :iestablecimiento, :establecimiento, :ubigeo, :profesion, :reglab, :icondlab, :condlab, :ruc, :tipo, :file, :cod_modular, :pais, @mensaje, @statu);');
+        $query = $conn->prepare('CALL registro_alumno(:dni, :fecnac, :nombres, :apepat, :apemat, :apecas, :correo, :celular, :fecha, :entidad, :region, :curso, :ipliego, :pliego, :iuejecutora, :uejecutora, :iestablecimiento, :establecimiento, :ubigeo, :profesion, :reglab, :icondlab, :condlab, :ruc, :tipo, :file, :cod_modular, :pais, :extranjero, @mensaje, @statu);');
 
         $query->bindParam(":dni", $dni);
         $query->bindParam(":fecnac", $fecnac);
@@ -90,8 +90,9 @@ class alumno extends DB{
         $query->bindParam(":file", $file);       
         //CODIGO MODULAR
         $query->bindParam(":cod_modular", $cod_modular);
-        //IDPAIS
+        //EXTRANJERO
         $query->bindParam(":pais", $pais);
+        $query->bindParam(":extranjero", $extranjero);
 
         try {
             $query->execute();

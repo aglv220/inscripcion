@@ -281,12 +281,12 @@
                                         <div class="form-row">
                                             <div class="form-group position-relative col-md-4">
                                                 <label for="ext_institucion">Institución</label>
-                                                <input type="text" class="form-control" id="ext_institucion" name="ext_institucion" placeholder="Ingrese su Institución" maxlength="100">
+                                                <input type="text" class="form-control" id="ext_institucion" name="ext_institucion" placeholder="Ingrese su Institución" onkeypress="return validar_institucion(event);"  maxlength="100">
                                             </div>
 
                                             <div class="form-group position-relative col-md-4">
                                                 <label for="ext_profesion" class="control-label">Profesión</label>
-                                                <input type="text" class="form-control" id="ext_profesion" name="ext_profesion" placeholder="Ingrese su Profesión" maxlength="100">
+                                                <input type="text" class="form-control" id="ext_profesion" name="ext_profesion" placeholder="Ingrese su Profesión" onkeypress="return solo_texto(event);"  maxlength="100">
                                             </div>
 
 

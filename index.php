@@ -48,6 +48,7 @@ if ($CNG->maintenance) {
 
                 if ($extranjero) {
                     //PAIS SI ES EXTRANJERO
+                    $extranjero = 1;
                     $pais = $_POST["pais"];
                     $nrodocrandom = random_int(100000000,999999999);
                     $dni = $nrodocrandom;
@@ -66,6 +67,7 @@ if ($CNG->maintenance) {
                     $ruc = "0123456780";
                     $tipo = "";
                 } else {
+                    $extranjero = 0;
                     $dni = $_POST["dni"];
                     $fecnac = DateTime::createFromFormat('d/m/Y', $_POST["fecnac"])->format('Y-m-d');
                     $region = substr($_POST["ubigeo"], 0, 2);
@@ -186,7 +188,8 @@ if ($CNG->maintenance) {
                             $tipo,
                             $file_uploaded,
                             $cod_modular,
-                            $pais
+                            $pais,
+                            $extranjero
                         );
                     }
                 }
