@@ -30,11 +30,11 @@ if ($CNG->maintenance) {
             case 'guardar':
                 require_once($CNG->dirroot . '/include/controller/alumno.php');
 
-                $extranjero = $_POST["extranjero"];
-                
+                $extranjero = $_POST["extranjero"];                
                 $curso = $_POST["curso"];
                 // CODIGO MODULAR
                 $cod_modular = $_POST["cod_modular"];
+                //DATOS PERSONALES
                 $apepat = $_POST["apepat"];
                 $apemat = $_POST["apemat"];
                 $apecas = $_POST["apecas"];
@@ -43,6 +43,8 @@ if ($CNG->maintenance) {
                 $celular = $_POST["celular"];
                 $fecha = date("Y-m-d H:i:s");
                 $pais = 89;
+                $entidad = $_POST["entidad"];
+                $profesion = $_POST["id_pro"];
 
                 if ($extranjero) {
                     //PAIS SI ES EXTRANJERO
@@ -50,10 +52,8 @@ if ($CNG->maintenance) {
                     $nrodocrandom = random_int(100000000,999999999);
                     $dni = $nrodocrandom;
                     $fecnac = "1969/01/01";
-                    $entidad = "1";
-                    $region = "01"; //CAMBIAR A LIMA
+                    $region = "15";
                     $ubigeo = "150101";
-                    $profesion = "01010301"; //CAMBIAR A NO ESPECIFICADO
                     $regimenlab = "10";
                     $pliego = "M. DE SALUD";
                     $ipliego = "011";
@@ -68,10 +68,8 @@ if ($CNG->maintenance) {
                 } else {
                     $dni = $_POST["dni"];
                     $fecnac = DateTime::createFromFormat('d/m/Y', $_POST["fecnac"])->format('Y-m-d');
-                    $entidad = $_POST["entidad"];
                     $region = substr($_POST["ubigeo"], 0, 2);
                     $ubigeo = $_POST["ubigeo"];
-                    $profesion = $_POST["id_pro"];
                     $regimenlab = $_POST["id_reglab"];
 
                     if ($entidad == "1") {

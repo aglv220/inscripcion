@@ -29,7 +29,7 @@
     <!-- ANIMATE CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
-
+    <script src="<?php echo $CNG->wwwroot; ?>/assets/js/funciones-header.js"></script>
 </head>
 
 <body>
@@ -242,15 +242,15 @@
                                     <div class="form-row mostrar">
                                         <div class="form-group position-relative col-md-4">
                                             <label for="apepat">Apellido Paterno</label>
-                                            <input type="text" class="form-control" id="apepat" name="apepat" placeholder="Apellido Paterno" required readonly>
+                                            <input type="text" class="form-control" id="apepat" name="apepat" placeholder="Apellido Paterno" onkeypress="return solo_texto(event);"  required readonly>
                                         </div>
                                         <div class="form-group position-relative col-md-4">
                                             <label for="apemat">Apellido Materno</label>
-                                            <input type="text" class="form-control" id="apemat" name="apemat" placeholder="Apellido Materno" required readonly>
+                                            <input type="text" class="form-control" id="apemat" name="apemat" placeholder="Apellido Materno" onkeypress="return solo_texto(event);"  required readonly>
                                         </div>
                                         <div class="form-group position-relative col-md-4">
                                             <label for="nombres">Nombres</label>
-                                            <input type="text" class="form-control" id="nombres" name="nombres" placeholder="Nombres" required readonly>
+                                            <input type="text" class="form-control" id="nombres" name="nombres" placeholder="Nombres" onkeypress="return solo_texto(event);" required readonly>
                                         </div>
                                         <div class="form-group position-relative col-md-4 d-none">
                                             <label for="apecas">Apellido Casada</label>
@@ -269,9 +269,31 @@
                                         </div>
                                         <div class="form-group position-relative col-md-4">
                                             <label for="celular">Número de Celular</label>
-                                            <input type="text" class="form-control" data-parsley-type="number" data-parsley-minlength="9" maxlength="9" id="celular" name="celular" placeholder="Celular" required>
+                                            <input type="phone" class="form-control" data-parsley-type="number" data-parsley-minlength="9" maxlength="9" onkeypress="return numeros_enteros(event);" id="celular" name="celular" placeholder="Celular" required>
                                         </div>
                                     </div>
+
+                                    <div class="mostrar-ext-il mt-2">
+                                        <h4 class="header-title">Información Laboral</h4>
+                                        <p class="sub-header text-primary font-weight-bold">
+                                            Ingrese el nombre de la Institución donde labora y el nombre de la profesión que ejerce actualmente.
+                                        </p>
+                                        <div class="form-row">
+                                            <div class="form-group position-relative col-md-4">
+                                                <label for="ext_institucion">Institución</label>
+                                                <input type="text" class="form-control" id="ext_institucion" name="ext_institucion" placeholder="Ingrese su Institución" maxlength="100">
+                                            </div>
+
+                                            <div class="form-group position-relative col-md-4">
+                                                <label for="ext_profesion" class="control-label">Profesión</label>
+                                                <input type="text" class="form-control" id="ext_profesion" name="ext_profesion" placeholder="Ingrese su Profesión" maxlength="100">
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+
+
                                 </div> <!-- end card-body-->
                             </div> <!-- end col-->
                         </div>

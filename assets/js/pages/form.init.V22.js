@@ -33,6 +33,7 @@ $(document).ready(function () {
     });
 
     $('.mostrar').hide();
+    $('.mostrar-ext-il').hide();
     $(".parsley-form").parsley()
 
     $('#dni').on('input', function () {
@@ -84,20 +85,30 @@ $(document).ready(function () {
             }
             if ($(".mostrar").is(":visible")) {
                 $('.mostrar').hide();
+                $('.mostrar-ext-il').hide();
                 $('#crdlaboral').collapse("hide");
                 $('input[name="dni"]').val("");
                 $('input[name="fecha"]').val("");
                 $("#loading").attr("hidden", true);
                 $("#validar").attr("disabled", false);
                 $('#div-btn-registro').hide();
+                //INFORMACIÓN LABORAL - EXTRANJERO
+                $('div.mostrar-ext-il input').prop("required", false);
+                $('div.mostrar-ext-il input').prop("disabled", true);
+                $('div.mostrar-ext-il input').val("");
             }
         }
     });
+
+    $('.mostrar-ext-il input[type="text"], .mostrar input[type="text"]').keyup(function() {
+		$(this).val($(this).val().toUpperCase());
+	});
 
     //CHK-EXTRANJERO
     $("#div-chkextranjero").hide();
     $("#div-btnextranjero").hide();
     $("#div-pais").hide();
+    $('.mostrar-ext-il').hide();
 
     $('#chkextranjero').prop("disabled", true);
     $('#btncontinue').prop("disabled", true);
@@ -106,6 +117,7 @@ $(document).ready(function () {
         if (data.currentTarget.selectedIndex > 0) {
             $('#crdpersonal').collapse("show");
             $('.mostrar').hide();
+            $('.mostrar-ext-il').hide();
             $('#crdlaboral').collapse("hide");
             clear_inputs(["dni", "apepat", "apemat", "nombres", "apecas", "fecha"]);
 
@@ -129,6 +141,11 @@ $(document).ready(function () {
             $("#div-pais").hide();
             $('#div-pais select[name="pais"]').prop("required", false);
             $('#div-pais select[name="pais"]').prop("disabled", true);
+            //INFORMACIÓN LABORAL - EXTRANJERO
+            $('div.mostrar-ext-il input').prop("required", false);
+            $('div.mostrar-ext-il input').prop("disabled", true);
+            $('div.mostrar-ext-il input').val("");
+
             $(".btn-guardar-2").val(txtbtnguardar1);
             $(".txt-datospers").html(txtdatospers);
 
@@ -229,13 +246,28 @@ $(document).ready(function () {
     $('#btncontinue').click(function (e) {
         e.preventDefault();
         $('.mostrar').show();
+        $('.mostrar-ext-il').show();
         $('#crdlaboral').collapse("hide");
         //LIMPIAR CONTROLES DE DATOS PERSONALES
         $('div.mostrar input').val("");
         $('div.mostrar input').prop("readonly", false);
+        //INFORMACIÓN LABORAL - EXTRANJERO
+        $('div.mostrar-ext-il input').prop("required", true);
+        $('div.mostrar-ext-il input').prop("disabled", false);
+        $('div.mostrar-ext-il input').val("");
 
         $('#div-btnextranjero').hide();
 
+        //DIV PAIS
+        if ($('#chkextranjero').is(":checked")) {
+            $("#div-pais").show();
+            $('#div-pais select[name="pais"]').prop("required", true);
+            $('#div-pais select[name="pais"]').prop("disabled", false);
+        } else {
+            $("#div-pais").hide();
+            $('#div-pais select[name="pais"]').prop("required", false);
+            $('#div-pais select[name="pais"]').prop("disabled", true);
+        }
         //BOTON DE REGISTRO ADICIONAL
         $('#div-btn-registro').show();
 
@@ -260,6 +292,12 @@ $(document).ready(function () {
     $('#validar').click(function (e) {
         e.preventDefault();
         $('.mostrar').hide();
+        $('.mostrar-ext-il').hide();
+        //INFORMACIÓN LABORAL - EXTRANJERO        
+        $('div.mostrar-ext-il input').prop("required", false);
+        $('div.mostrar-ext-il input').prop("disabled", true);
+        $('div.mostrar-ext-il input').val("");
+
         $('#crdlaboral').collapse("hide");
         $("#editsw").prop("disabled", true);
         $("#editsw").prop("checked", false);
@@ -295,13 +333,14 @@ $(document).ready(function () {
                             $dni.data('row', data);
                             var cmb = $cmb.data('values');
                             $('.mostrar').show();
+
                             $("#editsw").prop("disabled", false);
                             $("#nombres").val(data.nombres);
                             $("#apepat").val(data.apepat);
                             $("#apemat").val(data.apemat);
                             $("#apecas").val(data.apecas);
 
-                            //EXTRANJERO
+                            //DIV PAIS
                             if ($('#chkextranjero').is(":checked")) {
                                 $("#div-pais").show();
                                 $('#div-pais select[name="pais"]').prop("required", true);
@@ -603,10 +642,10 @@ $(document).ready(function () {
             val_uejec = 0;
             val_dni = 0;
             val_fecnac = 0;
-            val_entidad = 0;
+            val_entidad = $("#ext_institucion").val();;
             val_estab = 0;
             val_idestab = 0;
-            val_prof = 0;
+            val_prof = $("#ext_profesion").val();;
             val_reglab = 0;
             val_condlab = 0;
             val_idcondlab = 0;
