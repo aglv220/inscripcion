@@ -29,8 +29,8 @@ if ($CNG->maintenance) {
 
             case 'guardar':
                 require_once($CNG->dirroot . '/include/controller/alumno.php');
-
-                $extranjero = $_POST["extranjero"];                
+                //TIPO DE PARTICIPANTE
+                $tipo_participante = $_POST["tipo_participante"];
                 $curso = $_POST["curso"];
                 // CODIGO MODULAR
                 $cod_modular = $_POST["cod_modular"];
@@ -46,12 +46,12 @@ if ($CNG->maintenance) {
                 $entidad = $_POST["entidad"];
                 $profesion = $_POST["id_pro"];
 
-                if ($extranjero) {
+                if ($tipo_participante == "extranjero") {
                     //PAIS SI ES EXTRANJERO
-                    $extranjero = 1;
                     $pais = $_POST["pais"];
-                    $nrodocrandom = random_int(100000000,999999999);
-                    $dni = $nrodocrandom;
+                    $nrodocrandom = random_int(10000000, 99999999);
+                    $nro = 9;
+                    $dni = $nro . $nrodocrandom;
                     $fecnac = "1969/01/01";
                     $region = "15";
                     $ubigeo = "150101";
@@ -64,16 +64,30 @@ if ($CNG->maintenance) {
                     $iestablecimiento = "01000000";
                     $condicionlab = "Designado no de carrera";
                     $icondicionlab = "CL44";
-                    $ruc = "0123456780";
+                    $ruc = "00123456780";
                     $tipo = "";
-                } else {
-                    $extranjero = 0;
+                } else if ($tipo_participante == "privado") {
+                    $dni = $_POST["dni"];
+                    $fecnac = DateTime::createFromFormat('d/m/Y', $_POST["fecnac"])->format('Y-m-d');
+                    $region = substr($_POST["ubigeo"], 0, 2);
+                    $ubigeo = $_POST["ubigeo"];
+                    $regimenlab = 10;
+                    $pliego = "";
+                    $ipliego = "";
+                    $uejecutora = "";
+                    $iuejecutora = "";
+                    $establecimiento = "ADMINISTRACION CENTRAL";
+                    $iestablecimiento = "01000000";
+                    $condicionlab = "";
+                    $icondicionlab = "";
+                    $ruc = $_POST["ext_nroruc"];
+                    $tipo = "";
+                } else if ($tipo_participante == "minsa") {
                     $dni = $_POST["dni"];
                     $fecnac = DateTime::createFromFormat('d/m/Y', $_POST["fecnac"])->format('Y-m-d');
                     $region = substr($_POST["ubigeo"], 0, 2);
                     $ubigeo = $_POST["ubigeo"];
                     $regimenlab = $_POST["id_reglab"];
-
                     if ($entidad == "1") {
                         $pliego = $_POST["pliego"];
                         $ipliego = $_POST["ipliego"];
@@ -92,7 +106,6 @@ if ($CNG->maintenance) {
                         $iuejecutora = "";
                         $condicionlab = "";
                         $icondicionlab = "";
-
                         if ($_POST['privado'] == "1") {
                             $establecimiento = $_POST["rsocial"] == "" ? $_POST["establecimiento"] : $_POST["rsocial"];
                             $iestablecimiento = $_POST["iestablecimiento"];
@@ -106,7 +119,6 @@ if ($CNG->maintenance) {
                         }
                     }
                 }
-
                 $a = new alumno();
 
                 if ($curso == 0) {
@@ -114,7 +126,6 @@ if ($CNG->maintenance) {
                         "status" => 0
                     );
                 } else {
-
                     $file_uploaded = '';
                     if ($_POST['archivo'] == "1") {
                         $stfile = true;
@@ -189,11 +200,10 @@ if ($CNG->maintenance) {
                             $file_uploaded,
                             $cod_modular,
                             $pais,
-                            $extranjero
+                            $tipo_participante
                         );
                     }
                 }
-
                 header('Content-type: application/json; charset=utf-8');
                 echo json_encode($result, JSON_FORCE_OBJECT);
                 break;

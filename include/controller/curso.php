@@ -4,11 +4,9 @@ require_once($CNG->dirroot .'/include/controller/db.php');
 
 class cursos extends DB{
     
-
     public function getAllCursos()
     {
-        $query = $this->connect()->prepare("SELECT id, CONCAT(nombre_largo, ' ', DATE_FORMAT(fecha_inicio_ins,'%d de %M'),' - ', DATE_FORMAT(fecha_fin_ins,'%d de %M')) AS curso,
-                                            fecha_inicio_ins, fecha_fin_ins FROM tbl_curso WHERE date(now()) BETWEEN date(fecha_inicio_ins) AND date(fecha_fin_ins) AND estado = 1 AND (curso_libre = 0 OR curso_libre IS NULL); ");
+        $query = $this->connect()->prepare("SELECT id, CONCAT(nombre_largo, ' ', DATE_FORMAT(fecha_inicio_ins,'%d de %M'),' - ', DATE_FORMAT(fecha_fin_ins,'%d de %M')) AS curso, fecha_inicio_ins, fecha_fin_ins FROM tbl_curso WHERE date(now()) BETWEEN date(fecha_inicio_ins) AND date(fecha_fin_ins) AND estado = 1 AND (curso_libre = 0 OR curso_libre IS NULL); ");
         $query->execute();
 
         return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -16,11 +14,17 @@ class cursos extends DB{
 
     public function getAllCursosX()
     {
-        $query = $this->connect()->prepare("SELECT id, CONCAT(nombre_largo, ' ', DATE_FORMAT(fecha_inicio_ins,'%d de %M'),' - ', DATE_FORMAT(fecha_fin_ins,'%d de %M')) AS curso,
-                                            fecha_inicio_ins, fecha_fin_ins FROM tbl_curso WHERE id IN (199,200,201);");
+        $query = $this->connect()->prepare("SELECT id, CONCAT(nombre_largo, ' ', DATE_FORMAT(fecha_inicio_ins,'%d de %M'),' - ', DATE_FORMAT(fecha_fin_ins,'%d de %M')) AS curso, fecha_inicio_ins, fecha_fin_ins FROM tbl_curso WHERE id IN (199,200,201);");
         $query->execute();
 
         return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getCursosTransversales()
+    {
+        $query = $this->connect()->prepare("SELECT id FROM tbl_curso WHERE date(now()) BETWEEN date(fecha_inicio_ins) AND date(fecha_fin_ins) AND curso_tipo = 0");
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_COLUMN);
     }
 
     /****** LISTADO DE CURSOS LIBRES******/
@@ -43,11 +47,9 @@ class cursos extends DB{
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
-
     public function getAllCursosOld()
     {
-        $query = $this->connect()->prepare('SELECT id, nombre_largo AS curso, fecha_inicio_ins, fecha_fin_ins FROM tbl_curso
-                                            WHERE date(now()) BETWEEN date(fecha_inicio_ins) AND date(fecha_fin_ins);');
+        $query = $this->connect()->prepare('SELECT id, nombre_largo AS curso, fecha_inicio_ins, fecha_fin_ins FROM tbl_curso WHERE date(now()) BETWEEN date(fecha_inicio_ins) AND date(fecha_fin_ins);');
 
         $query->execute();
 

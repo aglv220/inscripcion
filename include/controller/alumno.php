@@ -49,7 +49,7 @@ class alumno extends DB{
     }
 
     //MODIFICADO CON CÓDIGO MODULAR
-    public function saveAlumnoByCurso($dni, $fecnac, $entidad, $pliego, $ipliego, $uejecutora, $iuejecutora, $establecimiento, $iestablecimiento, $region, $nombres, $apepat, $apemat, $apecas, $correo, $celular, $fecha, $curso, $ubigeo, $profesion, $reglab, $condlab, $icondlab, $ruc, $tipo, $file, $cod_modular, $pais, $extranjero){
+    public function saveAlumnoByCurso($dni, $fecnac, $entidad, $pliego, $ipliego, $uejecutora, $iuejecutora, $establecimiento, $iestablecimiento, $region, $nombres, $apepat, $apemat, $apecas, $correo, $celular, $fecha, $curso, $ubigeo, $profesion, $reglab, $condlab, $icondlab, $ruc, $tipo, $file, $cod_modular, $pais, $tipo_participante){
 
         $conn = $this->connect();
 
@@ -60,7 +60,7 @@ class alumno extends DB{
             );
         }
         
-        $query = $conn->prepare('CALL registro_alumno(:dni, :fecnac, :nombres, :apepat, :apemat, :apecas, :correo, :celular, :fecha, :entidad, :region, :curso, :ipliego, :pliego, :iuejecutora, :uejecutora, :iestablecimiento, :establecimiento, :ubigeo, :profesion, :reglab, :icondlab, :condlab, :ruc, :tipo, :file, :cod_modular, :pais, :extranjero, @mensaje, @statu);');
+        $query = $conn->prepare('CALL registro_alumno(:dni, :fecnac, :nombres, :apepat, :apemat, :apecas, :correo, :celular, :fecha, :entidad, :region, :curso, :ipliego, :pliego, :iuejecutora, :uejecutora, :iestablecimiento, :establecimiento, :ubigeo, :profesion, :reglab, :icondlab, :condlab, :ruc, :tipo, :file, :cod_modular, :pais, :tipo_participante, @mensaje, @statu);');
 
         $query->bindParam(":dni", $dni);
         $query->bindParam(":fecnac", $fecnac);
@@ -92,7 +92,8 @@ class alumno extends DB{
         $query->bindParam(":cod_modular", $cod_modular);
         //EXTRANJERO
         $query->bindParam(":pais", $pais);
-        $query->bindParam(":extranjero", $extranjero);
+        //TIPO DE PARTICIPANTE
+        $query->bindParam(":tipo_participante", $tipo_participante);
 
         try {
             $query->execute();

@@ -3,6 +3,7 @@ require_once(__DIR__.'/../../config/config.php');
 require_once($CNG->dirroot .'/include/api/reniec/reniec_api.php');
 require_once($CNG->dirroot .'/include/api/sunat/sunat_api.php');
 require_once($CNG->dirroot .'/include/api/inforhus/inforhus_api.php');
+require_once($CNG->dirroot .'/include/controller/ubigeo.php');
 
 class validaciones extends DB
 {
@@ -12,7 +13,7 @@ class validaciones extends DB
         $query->bindParam(":documento", $documento);
         $query->execute();
 
-        if (!$query->rowCount())
+        if (!$query->rowCount()) //SI NO EXISTE EN LA BASE DE DATOS
         {
             $intentos = 1;
             while ($intentos <= 10) 
@@ -136,7 +137,7 @@ class validaciones extends DB
                 }
             }
         }
-        else
+        else //YA SE ENCUENTRA CARGADO EN LA BASE DE DATOS
         {
             $obj = $query->fetchAll(PDO::FETCH_OBJ);
             if ($this->comparar_fechas($obj[0]->fecnac, $fecha_nacimiento, $tipo)){
@@ -171,7 +172,7 @@ class validaciones extends DB
                 $i = new inforhus_api();
                 $info = $i->get_info_api($documento);
 
-                if ($info->cargado != 0){
+                if ($info->cargado != 0){ //SE ENCUENTRA CARGADO EN INFORHUS
                     $response += ["entidad" => "MINSA"];
                     $response += ["id_entidad" => 1];
                     $response += ["ubigeo" => $info->registros[0]->id_ubigeo];
@@ -202,7 +203,7 @@ class validaciones extends DB
 
                     $response += ["id_condlab" => $info->registros[0]->id_condicion_laboral];
                     $response += ["condlab" => $info->registros[0]->condicion_laboral];
-                }else{
+                }else{ //NO SE ENCUENTRA CARGADO EN INFORHUS
                     $response += ["cod_dep" => $obj[0]->cod_dep];
                     $response += ["departamento" => $obj[0]->departamento];
                     $response += ["cod_prov" => $obj[0]->cod_prov];
@@ -243,10 +244,53 @@ class validaciones extends DB
         }
     }
 
+    //VALIDAR RUC - VERSION - ANGEL LAOS VALENCIA
     public function validar_ruc($nroruc){
         $r = new sunat_api();
         $data = $r->get_info_api($nroruc);
+        if ($data != null){
+            if ($data->success){
 
+                $p = new ubigeo();
+                $lstubigeo = $p->getUbigeoDet($data->data->ubigeo[2])[0];                
+                $departamento = [$lstubigeo["cod_dep"], $lstubigeo["departamento"]];
+                $provincia = [$lstubigeo["cod_prov"], $lstubigeo["provincia"]];
+                $distrito = [$lstubigeo["cod_dis"], $lstubigeo["distrito"]];
+
+                $json = json_encode(array(
+                    "status" => 6,
+                    "descripcion" => "Correcto",
+                    "rsocial" => $data->data->nombre_o_razon_social,
+                    "direccion" => $data->data->direccion,
+                    "direccion_c" => $data->data->direccion_completa,
+                    "ubigeo" => $data->ubigeo,
+                    "departamento" => $departamento,
+                    "provincia" => $provincia,
+                    "distrito" => $distrito,
+                    "estado" => $data->data->estado,
+                    "condicion" => $data->data->condicion
+                ), JSON_FORCE_OBJECT);
+                return $json;
+            }else{
+                $json = json_encode(array(
+                    "status" => 3,
+                    "descripcion" => "Número de RUC incorrecto o no está registrado."
+                ), JSON_FORCE_OBJECT);
+                return $json;
+            }
+        }else{
+            $json = json_encode(array(
+                "status" => 4,
+                "descripcion" => "La operación no se pudo completar debido a que el servicio de consulta de SUNAT no se encuentra disponible en este momento."
+            ), JSON_FORCE_OBJECT);
+            return $json;
+        }
+    }
+
+    //VALIDAR RUC - VERSION LUIS PALPA
+    /*public function validar_ruc($nroruc){
+        $r = new sunat_api();
+        $data = $r->get_info_api($nroruc);
         if ($data != null){
             if ($data->success){
                 $json = json_encode(array(
@@ -275,7 +319,7 @@ class validaciones extends DB
             ), JSON_FORCE_OBJECT);
             return $json;
         }
-    }
+    }*/
 
     public function comparar_fechas($fecNacimiento, $fecha_nacimiento, $tipo)
     {

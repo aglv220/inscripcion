@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8" />
     <title>Inscripciones - Escuela Nacional de Salud Pública</title>
@@ -10,68 +9,32 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <!-- App favicon -->
     <link rel="shortcut icon" href="<?php echo $CNG->wwwroot; ?>/assets/images/favicon.ico" />
-
     <!-- Plugins css-->
     <link href="<?php echo $CNG->wwwroot; ?>/assets/libs/select2/select2.min.css" rel="stylesheet" type="text/css" />
     <link href="<?php echo $CNG->wwwroot; ?>/assets/libs/bootstrap-select/bootstrap-select.min.css" rel="stylesheet" type="text/css" />
     <link href="<?php echo $CNG->wwwroot; ?>/assets/libs/bootstrap-datepicker/bootstrap-datepicker.min.css" rel="stylesheet" type="text/css" />
     <link href="<?php echo $CNG->wwwroot; ?>/assets/libs/sweetalert/sweetalert2.min.css" rel="stylesheet" type="text/css" />
-
     <!-- App css -->
     <link href="<?php echo $CNG->wwwroot; ?>/assets/css/bootstrap.min.css?v=2" rel="stylesheet" type="text/css" />
     <link href="<?php echo $CNG->wwwroot; ?>/assets/css/icons.min.css" rel="stylesheet" type="text/css" />
     <link href="<?php echo $CNG->wwwroot; ?>/assets/css/app.min.css?v=3" rel="stylesheet" type="text/css" />
-
-    <!-- OWL CAROUSEL -->
+    <!-- OWL CAROUSEL 
     <link href="<?php echo $CNG->wwwroot; ?>/assets/libs/owl-carousel/owl.carousel.css" rel="stylesheet" type="text/css" />
-    <link href="<?php echo $CNG->wwwroot; ?>/assets/libs/owl-carousel/owl.theme.css" rel="stylesheet" type="text/css" />
-
+    <link href="<?php echo $CNG->wwwroot; ?>/assets/libs/owl-carousel/owl.theme.css" rel="stylesheet" type="text/css" />-->
     <!-- ANIMATE CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-
-    <script src="<?php echo $CNG->wwwroot; ?>/assets/js/funciones-header.js"></script>
+    <!-- ESTILO CSS -->
+    <link href="<?php echo $CNG->wwwroot; ?>/assets/css/estilos.css" rel="stylesheet" type="text/css" />
+    <script src="<?php echo $CNG->wwwroot; ?>/assets/js/funciones-headerV2.js"></script>
 </head>
-
 <body>
     <!-- Begin page -->
     <div id="wrapper">
-
         <!-- Topbar Start -->
         <div class="navbar-custom shadow-lg">
-            <ul class="list-unstyled topnav-menu float-right mb-0 d-none">
-
-                <li class="d-none d-sm-block">
-                    <form class="app-search">
-                        <div class="app-search-box">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Buscar...">
-                                <div class="input-group-append">
-                                    <button class="btn" type="submit">
-                                        <i class="fe-search"></i>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </li>
-
-                <li class="dropdown d-none d-lg-block">
-                    <a class="nav-link dropdown-toggle mr-0 waves-effect waves-light" data-toggle="dropdown" href="forms-file-uploads.html#" role="button" aria-haspopup="false" aria-expanded="false">
-                        <img src="<?php echo $CNG->wwwroot; ?>/assets/images/flags/spain.jpg" alt="user-image" class="mr-1" height="12"> <span class="align-middle">Español <i class="mdi mdi-chevron-down"></i> </span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <!-- item-->
-                        <a href="javascript:void(0);" class="dropdown-item notify-item">
-                            <img src="<?php echo $CNG->wwwroot; ?>/assets/images/flags/spain.jpg" alt="user-image" class="mr-1" height="12"> <span class="align-middle">Español</span>
-                        </a>
-                    </div>
-                </li>
-
-            </ul>
-
             <!-- LOGO -->
             <div class="logo-box">
-                <a href="index.html" class="logo text-center">
+                <a href="" class="logo text-center">
                     <span class="logo-lg">
                         <img src="<?php echo $CNG->wwwroot; ?>/assets/images/logo.png" alt="" height="60">
                         <!-- <span class="logo-lg-text-light">Xeria</span> -->
@@ -82,7 +45,6 @@
                     </span>
                 </a>
             </div>
-
         </div>
         <!-- end Topbar -->
 
@@ -133,7 +95,6 @@
                         </div> <!-- end col-->
                     </div>
                     <!-- end row -->
-
                     <!-- Form row -->
                     <div class="row">
                         <div class="col-md-12">
@@ -142,6 +103,7 @@
                                 <p class="sub-header text-primary font-weight-bold">
                                     Seleccione de la lista el curso al cual desea inscribirse.
                                 </p>
+                                <!--<a class="btn btn-primary probar">PROBAR</a>-->
                                 <label for="curso">Seleccione un Curso</label>
                                 <div class="input-group">
                                     <select class="select2 form-control" data-live-search="false" name="curso" id="curso" required>
@@ -193,15 +155,13 @@
                                     <div class="form-row">
                                         <div class="form-group position-relative col-md-12" id="div-chkextranjero">
                                             <label for="editar">¿Es usted extranjero(a)?</label>
+
+                                            <a class="btn btn-primary tippy-tooltip tooltip-style animate__animated animate__pulse animate__infinite infinite" data-plugin="tippy" data-tippy-placement="top" title="Active esta opción solo si usted no es del Perú y no cuenta con DNI. <i>[Only activate this option if you aren't from Perú and don't have a Peruvian National Identity Document]<i>"><i class="fas fa-question"></i></a>
+
                                             <div class="custom-control custom-switch form-control border-0">
                                                 <input type="checkbox" class="custom-control-input" id="chkextranjero">
                                                 <label class="custom-control-label" for="chkextranjero">Soy extranjero(a) y no cuento con DNI peruano</label>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-row" id="div-btnextranjero">
-                                        <div class="btn btn-success waves-effect waves-light" id="btncontinue">
-                                            Confirmar y Continuar
                                         </div>
                                     </div>
                                     <!-- FIN - DIV CHECKBOX EXTRANJERO -->
@@ -228,7 +188,7 @@
                                     <!-- INICIO - SELECCION DE PAIS -->
                                     <div class="form-row mostrar">
                                         <div class="form-group position-relative col-md-4" id="div-pais">
-                                            <label for="pais">Seleccione su País</label>
+                                            <label for="pais">Seleccione su País de procedencia</label>
                                             <div class="input-group">
                                                 <select class="select2 form-control" data-live-search="false" name="pais" id="pais">
                                                 </select>
@@ -242,11 +202,11 @@
                                     <div class="form-row mostrar">
                                         <div class="form-group position-relative col-md-4">
                                             <label for="apepat">Apellido Paterno</label>
-                                            <input type="text" class="form-control" id="apepat" name="apepat" placeholder="Apellido Paterno" onkeypress="return solo_texto(event);"  required readonly>
+                                            <input type="text" class="form-control" id="apepat" name="apepat" placeholder="Apellido Paterno" onkeypress="return solo_texto(event);" required readonly>
                                         </div>
                                         <div class="form-group position-relative col-md-4">
                                             <label for="apemat">Apellido Materno</label>
-                                            <input type="text" class="form-control" id="apemat" name="apemat" placeholder="Apellido Materno" onkeypress="return solo_texto(event);"  required readonly>
+                                            <input type="text" class="form-control" id="apemat" name="apemat" placeholder="Apellido Materno" onkeypress="return solo_texto(event);" required readonly>
                                         </div>
                                         <div class="form-group position-relative col-md-4">
                                             <label for="nombres">Nombres</label>
@@ -273,7 +233,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="mostrar-ext-il mt-2">
+                                    <!--<div class="mostrar-ext-il mt-2">
                                         <h4 class="header-title">Información Laboral</h4>
                                         <p class="sub-header text-primary font-weight-bold">
                                             Ingrese el nombre de la Institución donde labora y el nombre de la profesión que ejerce actualmente.
@@ -288,10 +248,8 @@
                                                 <label for="ext_profesion" class="control-label">Profesión</label>
                                                 <input type="text" class="form-control" id="ext_profesion" name="ext_profesion" placeholder="Ingrese su Profesión" onkeypress="return solo_texto(event);"  maxlength="100">
                                             </div>
-
-
                                         </div>
-                                    </div>
+                                    </div>-->
 
 
                                 </div> <!-- end card-body-->
@@ -326,84 +284,126 @@
                         <div class="row collapse" id="crdlaboral">
                             <div class="col-md-12">
                                 <div class="card-box">
+
                                     <h4 class="header-title">Información Laboral</h4>
-                                    <p class="sub-header text-primary font-weight-bold">
-                                        En caso usted sea personal de Salud que no pertenece al MINSA, seleccione su <b>Entidad</b> correspondiente y luego <b>seleccione el establecimiento en donde labora</b>
-                                    </p>
-                                    <div class="form-row">
-                                        <div class="form-group position-relative col-md-4">
-                                            <label for="entidad">Entidad</label>
-                                            <select class="select2 form-control" name="entidad" id="entidad" required disabled>
-                                                <option value="">Seleccione...</option>
-                                                <option id="opcion" value="1">MINSA</option>
-                                                <option value="8">MINSA - TERCERO</option>
-                                                <option value="2">FAP</option>
-                                                <option value="3">EJERCITO</option>
-                                                <option value="4">ESSALUD</option>
-                                                <option value="5">OTRO</option>
-                                                <option value="6">MINEDU</option>
-                                                <option value="7">INPE</option>
-                                                <option value="9">PNP</option>
-                                                <option value="10">SISOL</option>
-                                            </select>
-                                        </div>
+                                    <!-- INICIO - DIV CHECKBOX ENTIDAD PRIVADA -->
+                                    <div class="form-row mostrar">
+                                        <div class="form-group position-relative col-md-12 mt-2" id="div-chkprivado">
+                                            <label for="editar">¿Usted pertenece a una Institución Privada?</label>
 
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="profesion" class="control-label">Profesión</label>
-                                                <div class="input-group required">
-                                                    <!--<select class="select2 form-control" name="profesion" id="profesion" required disabled>--> <!-- ASI ESTABA ANTES -->
-                                                    <select class="select2 form-control" name="profesion" id="profesion" disabled>
-                                                    </select>
-                                                    <div class="input-group-append">
-                                                        <span class="input-group-text" id='spinload1' hidden>
-                                                            <i class="spinner-border text-primary" style="height:1.3rem; width:1.3rem;" role="status"></i>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
+                                            <a class="btn btn-primary tippy-tooltip tooltip-style animate__animated animate__pulse animate__infinite infinite" data-plugin="tippy" data-tippy-placement="top" title="Active esta opción solo si usted no trabaja para el Ministerio de Salud y en su lugar trabaja para una empresa del sector privado. <i>[Activate this option only if you do not work for the Ministry of Health and instead work for a private sector company]<i>"><i class="fas fa-question"></i></a>
 
-                                        <div class="col-md-4">
-                                            <div class="form-group">
-                                                <label for="regimen" class="control-label">Régimen Laboral</label>
-                                                <select class="select2 form-control" name="regimen" id="regimen" required disabled>
-                                                    <option value="">Seleccione...</option>
-                                                    <option value="1">Regimen 276</option>
-                                                    <option value="2">Regimen 728</option>
-                                                    <option value="3">Regimen 1057</option>
-                                                    <option value="4">Locación de Servicios</option>
-                                                    <option value="6">Interno de Carreras de la Salud</option>
-                                                    <option value="10">Planilla (Entidad Privada)</option>
-                                                </select>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-4" hidden>
-                                            <div class="form-group">
-                                                <label for="condicion" class="control-label">Condición Laboral</label>
-                                                <div class="input-group required">
-                                                    <select class="select2 form-control" name="condicion" id="condicion" required disabled>
-                                                    </select>
-                                                    <div class="input-group-append">
-                                                        <span class="input-group-text" id='spinload6' hidden>
-                                                            <i class="spinner-border text-primary" style="height:1.3rem; width:1.3rem;" role="status"></i>
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group position-relative col-md-4" id=chkactualizar hidden>
-                                            <label for="editar">Actualización</label>
                                             <div class="custom-control custom-switch form-control border-0">
-                                                <input type="checkbox" class="custom-control-input" id="editsw">
-                                                <label class="custom-control-label" for="editsw">Actualizar mi Información Laboral</label>
+                                                <input type="checkbox" class="custom-control-input" id="chkprivado">
+                                                <label class="custom-control-label" for="chkprivado">Pertenezco a una Institución Privada y deseo registrar mis datos laborales manualmente</label>
                                             </div>
                                         </div>
                                     </div>
+                                    <!-- FIN - DIV CHECKBOX ENTIDAD PRIVADA -->
 
-                                    <div class="form-row">
+                                    <!-- INICIO - DIV - DATOS LABORALES EXTRANJERO / PRIVADO -->
+                                    <div class="mostrar-ext-il">
+                                        <p class="sub-header text-primary font-weight-bold text-div-laboral">
+                                            Ingrese el nombre de la Institución donde labora y el nombre de la profesión que ejerce actualmente.
+                                        </p>
+                                        <div class="form-row">
+                                            <div class="form-group position-relative col-md-4 div-nroruc-ext">
+                                                <label for="ext_nroruc">Nro. RUC de Centro Laboral</label>
+                                                <input type="text" class="form-control" id="ext_nroruc" name="ext_nroruc" placeholder="Ingrese el número de RUC de la Institución donde labora" onkeypress="return numeros_enteros(event);" data-parsley-minlength="11" maxlength="11">
+                                            </div>
+                                            <div class="form-group position-relative col-md-4">
+                                                <label for="ext_institucion">Institución (Centro Laboral)</label>
+                                                <input type="text" class="form-control" id="ext_institucion" name="ext_institucion" placeholder="Ingrese su Institución" onkeypress="return validar_institucion(event);" maxlength="100">
+                                            </div>
+                                            <div class="form-group position-relative col-md-4">
+                                                <label for="ext_profesion" class="control-label">Profesión</label>
+                                                <input type="text" class="form-control" id="ext_profesion" name="ext_profesion" placeholder="Ingrese su Profesión" onkeypress="return solo_texto(event);" maxlength="100">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- FIN - DIV - DATOS LABORALES EXTRANJERO / PRIVADO -->
+
+                                    <div class="div-laboral-minsa">
+                                        <p class="sub-header text-primary font-weight-bold">
+                                            <!--En caso usted sea personal de Salud que no pertenece al MINSA, seleccione su <b>Entidad</b> correspondiente y luego <b>seleccione el establecimiento en donde labora</b>-->
+                                            Si usted es personal MINSA registrado correctamente en INFORHUS los datos a continuación se rellenarán automáticamente, caso contrario usted deberá completar su información laboral con las opciones disponibles. Si sus datos se rellenaron automáticamente, verifique que sus datos esten consignados correctamente (en este caso, el sistema no le permitirá editar ningún dato de información laboral), ya que en caso no sea así, deberá actualizar su información de INFORHUS (comunicandose a la central del MINSA).
+                                        </p>
+
+                                        <div class="form-row">
+                                            <div class="form-group position-relative col-md-4">
+                                                <label for="entidad">Entidad</label>
+                                                <select class="select2 form-control" name="entidad" id="entidad" required disabled>
+                                                    <option value="">Seleccione...</option>
+                                                    <option id="opcion" value="1">MINSA</option>
+                                                    <option value="8">MINSA - TERCERO</option>
+                                                    <option value="2">FAP</option>
+                                                    <option value="3">EJERCITO</option>
+                                                    <option value="4">ESSALUD</option>
+                                                    <option value="5">OTRO</option>
+                                                    <option value="6">MINEDU</option>
+                                                    <option value="7">INPE</option>
+                                                    <option value="9">PNP</option>
+                                                    <option value="10">SISOL</option>
+                                                </select>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="profesion" class="control-label">Profesión</label>
+                                                    <div class="input-group required">
+                                                        <!--<select class="select2 form-control" name="profesion" id="profesion" required disabled>--> <!-- ASI ESTABA ANTES -->
+                                                        <select class="select2 form-control" name="profesion" id="profesion" disabled>
+                                                        </select>
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text" id='spinload1' hidden>
+                                                                <i class="spinner-border text-primary" style="height:1.3rem; width:1.3rem;" role="status"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label for="regimen" class="control-label">Régimen Laboral</label>
+                                                    <select class="select2 form-control" name="regimen" id="regimen" required disabled>
+                                                        <option value="">Seleccione...</option>
+                                                        <option value="1">Regimen 276</option>
+                                                        <option value="2">Regimen 728</option>
+                                                        <option value="3">Regimen 1057</option>
+                                                        <option value="4">Locación de Servicios</option>
+                                                        <option value="6">Interno de Carreras de la Salud</option>
+                                                        <option value="10">Planilla (Entidad Privada)</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4" hidden>
+                                                <div class="form-group">
+                                                    <label for="condicion" class="control-label">Condición Laboral</label>
+                                                    <div class="input-group required">
+                                                        <select class="select2 form-control" name="condicion" id="condicion" required disabled>
+                                                        </select>
+                                                        <div class="input-group-append">
+                                                            <span class="input-group-text" id='spinload6' hidden>
+                                                                <i class="spinner-border text-primary" style="height:1.3rem; width:1.3rem;" role="status"></i>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group position-relative col-md-4" id=chkactualizar hidden>
+                                                <label for="editar">Actualización</label>
+                                                <div class="custom-control custom-switch form-control border-0">
+                                                    <input type="checkbox" class="custom-control-input" id="editsw">
+                                                    <label class="custom-control-label" for="editsw">Actualizar mi Información Laboral</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-row div-ubigeo">
                                         <div class="form-group position-relative col-md-4">
                                             <label for="departamento">Departamento</label>
                                             <div class="input-group">
@@ -437,64 +437,64 @@
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div class="form-row">
-                                        <div class="form-group position-relative col-md-4" id="cpliego">
-                                            <label for="apepat">Pliego</label>
-                                            <input type="text" class="form-control" id="pliego" name="pliego" placeholder="Pliego" required readonly>
-                                        </div>
-                                        <div class="form-group position-relative col-md-4" id="cuejecutora">
-                                            <label for="apemat">Unidad Ejecutora</label>
-                                            <input type="text" class="form-control" id="uejecutora" name="uejecutora" placeholder="Unidad Ejecutora" required readonly>
-                                        </div>
-                                        <div class="form-group position-relative col-md-4" id="cestablecimiento">
-                                            <label for="nombres">Establecimiento</label>
-                                            <div class="input-group">
-                                                <select class="select2 form-control" name="establecimiento" id="establecimiento" required disabled>
-                                                </select>
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text" id='spinload5' hidden><i class="spinner-border text-primary" style="height:1.3rem; width:1.3rem;" role="status"></i></span>
+                                    <div class="div-laboral-minsa">
+                                        <div class="form-row">
+                                            <div class="form-group position-relative col-md-4" id="cpliego">
+                                                <label for="apepat">Pliego</label>
+                                                <input type="text" class="form-control" id="pliego" name="pliego" placeholder="Pliego" required readonly>
+                                            </div>
+                                            <div class="form-group position-relative col-md-4" id="cuejecutora">
+                                                <label for="apemat">Unidad Ejecutora</label>
+                                                <input type="text" class="form-control" id="uejecutora" name="uejecutora" placeholder="Unidad Ejecutora" required readonly>
+                                            </div>
+                                            <div class="form-group position-relative col-md-4" id="cestablecimiento">
+                                                <label for="nombres">Establecimiento</label>
+                                                <div class="input-group">
+                                                    <select class="select2 form-control" name="establecimiento" id="establecimiento" required disabled>
+                                                    </select>
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text" id='spinload5' hidden><i class="spinner-border text-primary" style="height:1.3rem; width:1.3rem;" role="status"></i></span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="form-row">
+                                            <div class="form-group position-relative col-md-4" id="cruc">
+                                                <label for="ruc">Número de RUC</label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" data-parsley-minlength="11" maxlength="11" id="ruc" name="ruc" placeholder="Nro de RUC">
+                                                    <div class="btn btn-success waves-effect waves-light" id="rucvalida">
+                                                        <span class="spinner-border spinner-border-sm mr-1" id="loadingruc" hidden></span>
+                                                        Validar
+                                                    </div>
+                                                </div><!-- input-group -->
+                                            </div>
+                                            <div class="form-group position-relative col-md-4" id="crsocial">
+                                                <label for="rsocial">Razón Social</label>
+                                                <input type="text" class="form-control" id="rsocial" name="rsocial" placeholder="Razón Social" required readonly>
+                                            </div>
+                                            <div class="form-group position-relative col-md-4" id="ctipo">
+                                                <label for="tipo">Tipo de Empresa</label>
+                                                <select class="select2 form-control" name="tipo" id="tipo" required disabled>
+                                                    <option value="1">Tipo 1 (5 a 20 Trabajadores no incluidos en el DS 003-98 SA)</option>
+                                                    <option value="2">Tipo 2 (Hasta 20 Trabajadores incluidos en el DS 003-98 SA)</option>
+                                                    <option value="3">Tipo 3 (21 a 50 Trabajadores)</option>
+                                                    <option value="4">Tipo 4 (51 a 100 Trabajadores)</option>
+                                                    <option value="5">Tipo 5 (101 a 500 Trabajadores)</option>
+                                                    <option value="6">Tipo 6 (mas de 500 Trabajadores)</option>
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
-
-                                    <div class="form-row">
-                                        <div class="form-group position-relative col-md-4" id="cruc">
-                                            <label for="ruc">Número de RUC</label>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" data-parsley-minlength="11" maxlength="11" id="ruc" name="ruc" placeholder="Nro de RUC">
-                                                <div class="btn btn-success waves-effect waves-light" id="rucvalida">
-                                                    <span class="spinner-border spinner-border-sm mr-1" id="loadingruc" hidden></span>
-                                                    Validar
-                                                </div>
-                                            </div><!-- input-group -->
-                                        </div>
-                                        <div class="form-group position-relative col-md-4" id="crsocial">
-                                            <label for="rsocial">Razón Social</label>
-                                            <input type="text" class="form-control" id="rsocial" name="rsocial" placeholder="Razón Social" required readonly>
-                                        </div>
-                                        <div class="form-group position-relative col-md-4" id="ctipo">
-                                            <label for="tipo">Tipo de Empresa</label>
-                                            <select class="select2 form-control" name="tipo" id="tipo" required disabled>
-                                                <option value="1">Tipo 1 (5 a 20 Trabajadores no incluidos en el DS 003-98 SA)</option>
-                                                <option value="2">Tipo 2 (Hasta 20 Trabajadores incluidos en el DS 003-98 SA)</option>
-                                                <option value="3">Tipo 3 (21 a 50 Trabajadores)</option>
-                                                <option value="4">Tipo 4 (51 a 100 Trabajadores)</option>
-                                                <option value="5">Tipo 5 (101 a 500 Trabajadores)</option>
-                                                <option value="6">Tipo 6 (mas de 500 Trabajadores)</option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <br />
-
-                                    <div class="form-row" id="div-guardar">
+                                    <div class="form-row mt-2" id="div-guardar">
                                         <div class="form-group position-relative col-md-6">
                                             <input class="btn btn-primary waves-effect waves-light" type="submit" id="guardar" form="frmGuardar" value="Registrarse">
+
+                                            <a class="btn btn-danger tippy-tooltip tooltip-style-v2 animate__animated animate__pulse animate__infinite infinite btn-info-laboral" data-plugin="tippy" data-tippy-placement="top" title="Para poder activar nuevamente el <font class='text-primary'>Botón <b>'Registrarse'</b></font>, de clic nuevamente sobre el <font class='text-success'>Botón de color verde <b>'Validar'</b></font> de la parte superior, caso contrario, <b>Si el sistema se lo permite</b>, complete todos los datos laborales faltantes"><i class="fas fa-exclamation"></i></a>
                                             <!-- <span class="spinner-border spinner-border-sm mr-1" id="saving" hidden></span> -->
                                         </div>
-                                    </div><!-- end col-->
+                                    </div>
+
                                 </div><!-- end card-body-->
                             </div>
                         </div> <!-- end Row-->
@@ -766,17 +766,6 @@
                                 </div> <!-- end card-->
                             </div><!-- end col -->
                         </div><!-- end row -->
-
-                        <div class="row collapse" id="div-btn-registro">
-                            <div class="col-md-12">
-                                <div class="card-box">
-                                    <div class="form-group position-relative col-md-12">
-                                        <input class="btn btn-primary waves-effect waves-light btn-guardar-2" type="submit" id="guardar" form="frmGuardar" value="Registrarse">
-                                        <!-- <span class="spinner-border spinner-border-sm mr-1" id="saving" hidden></span> -->
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </form>
 
                     <!--- /****** CURSOS LIBRES EN PLATAFORMA *****/ --><!--
@@ -959,38 +948,31 @@
     <!-- End Page content -->
     <!-- ============================================================== -->
 
-
     </div>
     <!-- END wrapper -->
-
     <!-- Vendor js -->
     <script src="<?php echo $CNG->wwwroot; ?>/assets/js/vendor.min.js"></script>
-
     <!-- Validation js (Parsleyjs) -->
     <script src="<?php echo $CNG->wwwroot; ?>/assets/libs/parsleyjs/parsley.min.js"></script>
-
     <!-- App js -->
     <script src="<?php echo $CNG->wwwroot; ?>/assets/js/app.min.js"></script>
-
     <!-- Plugins Js -->
     <script src="<?php echo $CNG->wwwroot; ?>/assets/libs/select2/select2.min.js?v=2"></script>
     <script src="<?php echo $CNG->wwwroot; ?>/assets/libs/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
     <script src="<?php echo $CNG->wwwroot; ?>/assets/libs/sweetalert/sweetalert2.min.js"></script>
     <script src="<?php echo $CNG->wwwroot; ?>/assets/libs/jquery-mask-plugin/jquery.mask.min.js"></script>
     <script src="<?php echo $CNG->wwwroot; ?>/assets/libs/twitter-bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
-
     <!-- Init js-->
     <script src="<?php echo $CNG->wwwroot; ?>/assets/js/pages/form-pickers.init.js"></script>
-    <script src="<?php echo $CNG->wwwroot; ?>/assets/js/pages/form.init.V22.js"></script>
-
+    <script src="<?php echo $CNG->wwwroot; ?>/assets/js/pages/form.init.V26.js"></script>
     <!-- POPPER -->
     <script scr="https://unpkg.com/@popperjs/core@2"></script>
-    <!-- OWL CAROUSEL -->
-    <script src="<?php echo $CNG->wwwroot; ?>/assets/libs/owl-carousel/owl.carousel.min.js"></script>
+    <!-- OWL CAROUSEL 
+    <script src="<?php echo $CNG->wwwroot; ?>/assets/libs/owl-carousel/owl.carousel.min.js"></script>-->
     <!-- TIPPY JS -->
     <script src="<?php echo $CNG->wwwroot; ?>/assets/libs/tippy/tippy.all.min.js"></script>
-    <!-- FUNCIONES JS -->
-    <script src="<?php echo $CNG->wwwroot; ?>/assets/js/pages/functions.js"></script>
+    <!-- FUNCIONES JS 
+    <script src="<?php echo $CNG->wwwroot; ?>/assets/js/pages/functions.js"></script>-->
 </body>
 
 </html>
