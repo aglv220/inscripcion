@@ -1,5 +1,4 @@
 $(document).ready(function () {
-
     /******** INICIALIZACIÓN *******/
     //INICIALIZACIÓN DE SELECT2
     $(".select2").select2()
@@ -14,17 +13,21 @@ $(document).ready(function () {
     var $editor = $('#frmGuardar');
     var $cmb = $('#curso');
     var $btn_info_laboral = $('.btn-info-laboral');
+    var $lbl_dni = $('#label-dni');
+    var $tooltip_doc = $('.dni-tooltip');
     var id_curso = 0;
     var txtdatospers = "Ingrese su Número de documento junto a su Fecha de Nacimiento, luego haga click en 'Validar', sus nombres y apellidos se rellenarán automáticamente";
-    var txtdatospers1 = "Si usted cuenta con DNI del Perú, ingrese su Número de documento junto a su Fecha de Nacimiento, luego haga click en 'Validar', sus nombres y apellidos se rellenarán automáticamente; caso contrario si usted es Extranjero(a) active la casilla 'Soy extranjero(a) y no cuento con DNI peruano'";
-    var txtdatospers2 = "Para continuar con el proceso de registro ingrese sus datos personales, tales como: Apellido Paterno, Apellido Materno, Nombres, Email, Confirmación de Email y Número de celular";
+    var txtdatospers1 = "Si usted cuenta con DNI del Perú o Carnet de Extranjería, ingrese su Número de documento junto a su Fecha de Nacimiento, luego haga click en 'Validar', sus nombres y apellidos se rellenarán automáticamente; caso contrario si usted es Extranjero(a) y no cuenta con DNI ni con Carnet de Extranjería, active la casilla 'Soy extranjero(a) y no cuento con DNI del Perú ni con Carnet de Extranjería'";
+    var txtdatospers2 = "Para continuar con el proceso de registro ingrese sus datos personales, tales como: Documento de Identidad (del documento que tenga disponible, ya sea pasaporte, pase temporal o algún documento de su país de procedencia, caso contrario puede dejarlo vacío), Fecha de nacimiento, País de procedencia, Apellido Paterno, Apellido Materno, Nombres, Email, Confirmación de Email y Número de celular";
     var textlaboral_ext = "Ingrese el nombre de la Institución donde labora y el nombre de la profesión que ejerce actualmente.";
     var textlaboral_priv = "Ingrese el nro. RUC y Nombre de la Institución donde labora, el nombre de la Profesión que ejerce actualmente y seleccione el Departamento, Provincia y Distrito (secuencialmente) donde usted labora.";
+    var txt_lbl_dni_peru = "Documento Nacional de Identidad";
+    var txt_lbl_dni_ext = "Documento de Identidad (Opcional)";
     var lst_tipos_participante = ["minsa", "extranjero", "privado", "acreditado"];
-    var tipo_participante = 0; //["minsa","extranjero","privado"]
+    var tipo_participante = 0;
     var participante_noinforhus = false;
-    var cursos_transversales = [0];
     var validar_rucxsunat = false;
+    //var cursos_libreacceso = [0];
 
     /******** DATOS POR DEFECTO *******/
     //DATOS PERSONALES
@@ -48,6 +51,10 @@ $(document).ready(function () {
     //NRO RUC MANUAL
     $('.div-nroruc-ext').hide();
     $btn_info_laboral.hide();
+    //TOOLTIP DE DOCUMENTO DE IDENTIDAD
+    $tooltip_doc.hide();
+    //MENSAJE DE AVISO POR CURSO
+    //$(".msg-aviso").hide();
 
     /******** EVENTOS DE CONTROLES *******/
 
@@ -104,12 +111,33 @@ $(document).ready(function () {
     //CHECKBOX PARTICIPANTE EXTRANJERO
     $("#chkextranjero").on('change', function () {
         if (!$('#chkextranjero').is(":disabled")) {
+            //LIMPIAR CONTROLES DE DNI Y FECHA DE NACIMIENTO
+            $('input[name="dni"]').val("");
+            $('input[name="fecha"]').val("");
+            //VALIDAR CAMBIOS EN EL CHECKBOX EXTRANJERO
             if ($('#chkextranjero').is(":checked")) { //PARTICIPANTE EXTRANJERO
                 //TIPO DE PARTICIPANTE
                 tipo_participante = 1;
 
-                $("#div-dniperu").hide();
+                $("#div-pais").show();
+                $('#div-pais select[name="pais"]').prop("required", true);
+                $('#div-pais select[name="pais"]').prop("disabled", false);
+
+                //BTN VALIDAR DNI
+                $("#validar").hide();
+                $("#validar").attr("disabled", true);
+                $("#loading").attr("hidden", true);
+
+                //CAMPOS DE DOCUMENTO Y FECHA DE NACIMIENTO
                 $('input[name="dni"]').prop("required", false);
+                $lbl_dni.html(txt_lbl_dni_ext);
+                $tooltip_doc.show();
+
+                $('input[name="dni"]').attr("data-parsley-minlength", 5);
+                $('input[name="dni"]').prop("maxlength", 20);
+                $('input[name="dni"]').prop("placeholder", "Documento de Identidad");
+
+                //DATOS PERSONALES
                 $(".txt-datospers").html(txtdatospers2);
 
                 //SECCIÓN DE DATOS PERSONALES
@@ -145,17 +173,6 @@ $(document).ready(function () {
                 //TEXTO DE SECCION LABORAL
                 $('.text-div-laboral').html(textlaboral_ext);
 
-                //DIV PAIS
-                if ($('#chkextranjero').is(":checked")) {
-                    $("#div-pais").show();
-                    $('#div-pais select[name="pais"]').prop("required", true);
-                    $('#div-pais select[name="pais"]').prop("disabled", false);
-                } else {
-                    $("#div-pais").hide();
-                    $('#div-pais select[name="pais"]').prop("required", false);
-                    $('#div-pais select[name="pais"]').prop("disabled", true);
-                }
-
                 $("#nombres").prop("readonly", false);
                 $("#apepat").prop("readonly", false);
                 $("#apemat").prop("readonly", false);
@@ -186,8 +203,25 @@ $(document).ready(function () {
                 //TIPO DE PARTICIPANTE
                 tipo_participante = 0;
 
-                $("#div-dniperu").show();
+                $("#div-pais").hide();
+                $('#div-pais select[name="pais"]').prop("required", false);
+                $('#div-pais select[name="pais"]').prop("disabled", true);
+
+                //BTN VALIDAR DNI
+                $("#validar").show();
+                $("#validar").attr("disabled", false);
+                $("#loading").attr("hidden", true);
+
+                //CAMPOS PARA VALIDAR POR RENIEC
                 $('input[name="dni"]').prop("required", true);
+                $lbl_dni.html(txt_lbl_dni_peru);
+                $tooltip_doc.hide();
+
+                $('input[name="dni"]').attr("data-parsley-minlength", 8);
+                $('input[name="dni"]').prop("maxlength", 9);
+                $('input[name="dni"]').prop("placeholder", "Documento Nacional de Identidad del Perú");
+
+                //DATOS PERSONALES
                 $(".txt-datospers").html(txtdatospers1);
                 //NRO RUC MANUAL
                 $('.div-nroruc-ext').show();
@@ -204,10 +238,6 @@ $(document).ready(function () {
                 //DIV LABORAL MINSA
                 $('.div-laboral-minsa').hide();
 
-                $('input[name="dni"]').val("");
-                $('input[name="fecha"]').val("");
-                $("#loading").attr("hidden", true);
-                $("#validar").attr("disabled", false);
                 //INFORMACIÓN LABORAL - EXTRANJERO
                 $('div.mostrar-ext-il input').prop("required", false);
                 $('div.mostrar-ext-il input').prop("disabled", true);
@@ -249,6 +279,10 @@ $(document).ready(function () {
                 //DATOS LABORALES EXTRANJEROS / ENTIDAD PRIVADA
                 $('div.mostrar-ext-il input').prop("required", true);
                 $('div.mostrar-ext-il input').prop("disabled", false);
+
+                //QUITAR REQUERIDO DE RUC PARA PRIVADOS - POR DESCONOCIMIENTO
+                $('#ext_nroruc').prop("required", false);
+
                 //DATOS LABORALES
                 $("#entidad").attr("required", false);
                 $("#profesion").attr("required", false);
@@ -266,7 +300,7 @@ $(document).ready(function () {
                 $btn_info_laboral.hide();
             } else { //PERTENECE AL MINSA U OTRA INSTITUCIÓN ACREDITADA
                 //TIPO DE PARTICIPANTE
-                if(participante_noinforhus == true){ //SI NO TIENE INFORHUS
+                if (participante_noinforhus == true) { //SI NO TIENE INFORHUS
                     tipo_participante = 3; //ES ACREDITADO
                     $('#entidad').val(null).trigger('change');
                     $('#profesion').val(null).trigger('change');
@@ -275,9 +309,13 @@ $(document).ready(function () {
                     $('#provincia').val(null).trigger('change');
                     $('#distrito').val(null).trigger('change');
                     $('#establecimiento').val(null).trigger('change');
-                } else {
-                    tipo_participante = 0; //ES MINSA
-                }                
+                } else { //TIENE DATOS EN LA BASE DE DATOS
+                    if ($("#entidad").selectedIndex == 1 || $("#entidad").val() == 1) {
+                        tipo_participante = 0; //ES MINSA
+                    } else {
+                        tipo_participante = 3; //ES ACREDITADO
+                    }
+                }
                 //DIV LABORAL EXTRANJERO / PRIVADO
                 $('.mostrar-ext-il').hide();
                 //DIV LABORAL MINSA
@@ -354,40 +392,19 @@ $(document).ready(function () {
             $('div.mostrar-ext-il input').val("");
             $(".txt-datospers").html(txtdatospers);
 
-            $("#div-dniperu").show();
+            //DATOS PARA VALIDACIÓN RENIEC
             $('input[name="dni"]').prop("required", true);
+            $('input[name="dni"]').val("");
+            $('input[name="fecha"]').val("");
+            $('input[name="dni"]').attr("data-parsley-minlength", 8);
+            $('input[name="dni"]').prop("maxlength", 9);
+            $('input[name="dni"]').prop("placeholder", "Documento Nacional de Identidad del Perú");
+            $lbl_dni.html(txt_lbl_dni_peru);
+            $tooltip_doc.hide();
 
-            $.post("include/util/getFunctions.php", { function: "getCursosTransversales" }, function (data) {
-                if (data != false) {
-                    cursos_transversales = JSON.parse(data);
-                } else {
-                    cursos_transversales = [0];
-                }
-            }).done(function (data) {
-                //TIPO DE PARTICIPANTE POR DEFECTO (MINSA)
-                tipo_participante = 0;
-                //ID DE CURSOS QUE PERMITEN EXTRANJEROS Y ENTIDADES PRIVADAS (CURSOS TRANSVERSALES)
-                if (
-                    cursos_transversales.indexOf(parseInt(id_curso)) >= 0 || 
-                    cursos_transversales.indexOf(id_curso.toString()) >= 0
-                ) {
-                    //MOSTRAR CHECKBOX DE EXTRANJERO
-                    $("#div-chkextranjero").show();
-                    $('#chkextranjero').prop("disabled", false);
-                    $(".txt-datospers").html(txtdatospers1);
-                    //MOSTRAR CHECKBOX DE PRIVADO
-                    $("#div-chkprivado").show();
-                    $('#chkprivado').prop("disabled", false);
-                } else { //CURSO DE INSCRIPCIÓN SOLO MINSA
-                    //OCULTAR CHECKBOX DE EXTRANJERO
-                    $("#div-chkextranjero").hide();
-                    $('#chkextranjero').prop("disabled", true);
-                    $(".txt-datospers").html(txtdatospers);
-                    //OCULTAR CHECKBOX DE PRIVADO
-                    $("#div-chkprivado").hide();
-                    $('#chkprivado').prop("disabled", true);
-                }
-            })
+            //BOTON VALIDAR DNI
+            $("#validar").show();
+
             $("#spinload0").attr("hidden", false);
             $.ajax({
                 url: "include/util/getFunctions.php",
@@ -400,6 +417,39 @@ $(document).ready(function () {
                     values.descripcion = data[0].d_descrip;
                     values.archivos = data[0].r_archivo;
                     values.privado = data[0].r_privado;
+                    /** DATOS ADICIONALES */
+                    values.tipo_curso = data[0].curso_tipo;
+                    values.curso_detalle = data[0].curso_detalle;
+                    values.curso_libre = data[0].curso_libre == null ? 0 : data[0].curso_libre;
+
+                    //TIPO DE PARTICIPANTE POR DEFECTO (MINSA)
+                    tipo_participante = 0;
+
+                    if (values.curso_libre == 1) { //ES CURSO LIBRE
+                        //MOSTRAR CHECKBOX DE EXTRANJERO
+                        $("#div-chkextranjero").show();
+                        $('#chkextranjero').prop("disabled", false);
+                        $(".txt-datospers").html(txtdatospers1);
+                        //MOSTRAR CHECKBOX DE PRIVADO
+                        $("#div-chkprivado").show();
+                        $('#chkprivado').prop("disabled", false);
+                    } else { //CURSO DE INSCRIPCIÓN SOLO MINSA
+                        //OCULTAR CHECKBOX DE EXTRANJERO
+                        $("#div-chkextranjero").hide();
+                        $('#chkextranjero').prop("disabled", true);
+                        $(".txt-datospers").html(txtdatospers);
+                        //OCULTAR CHECKBOX DE PRIVADO
+                        $("#div-chkprivado").hide();
+                        $('#chkprivado').prop("disabled", true);
+                    }
+
+                    if (values.curso_detalle != null && values.curso_detalle != "") {
+                        $(".msg-aviso").show();
+                        $(".msg-aviso").html(values.curso_detalle);
+                    } else {
+                        $(".msg-aviso").hide();
+                        $(".msg-aviso").html("");
+                    }
 
                     $cmb.data('values', values);
                     $("#spinload0").attr("hidden", true);
@@ -440,14 +490,12 @@ $(document).ready(function () {
         }
     });
 
-    $(".probar").click(function(data){
-        console.log(tipo_participante);
+    $(".probar").click(function (data) {
+        console.log(lst_tipos_participante[tipo_participante]);
     });
 
     $("#entidad").change(function (data) {
-        if (( 
-            data.currentTarget.selectedIndex == 1 && ( participante_noinforhus == true || participante_noinforhus == false )
-         )) { //SI NO TIENE INFORHUS Y SELECCIONO MINSA
+        if ((data.currentTarget.selectedIndex == 1)) { //SI NO TIENE INFORHUS Y SELECCIONO MINSA
             tipo_participante = 0; // ES MINSA
         } else {
             tipo_participante = 3; // ES ACREDITADO
@@ -457,7 +505,7 @@ $(document).ready(function () {
     $("#departamento").change(function (data) {
         var pass = false;
         var selects_to_clear = [];
-        if (( data.currentTarget.selectedIndex > 0 && $('#editsw').is(":checked") && !$('#chkprivado').is(":checked") )) {
+        if ((data.currentTarget.selectedIndex > 0 && $('#editsw').is(":checked") && !$('#chkprivado').is(":checked"))) {
             selects_to_clear = ["provincia", "distrito", "establecimiento"];
             pass = true;
         }
@@ -474,11 +522,11 @@ $(document).ready(function () {
 
     $("#provincia").change(function (data) {
         var pass = false;
-        if (( data.currentTarget.selectedIndex > 0 && $('#editsw').is(":checked") && !$('#chkprivado').is(":checked") )) {
+        if ((data.currentTarget.selectedIndex > 0 && $('#editsw').is(":checked") && !$('#chkprivado').is(":checked"))) {
             selects_to_clear = ["distrito", "establecimiento"];
             pass = true;
         }
-        if (( data.currentTarget.selectedIndex > 0 && $('#chkprivado').is(":checked") )) {
+        if ((data.currentTarget.selectedIndex > 0 && $('#chkprivado').is(":checked"))) {
             selects_to_clear = ["distrito"];
             pass = true;
         }
@@ -490,13 +538,13 @@ $(document).ready(function () {
     });
 
     $("#distrito").change(function (data) {
-        if (( data.currentTarget.selectedIndex > 0 && $('#editsw').is(":checked") && !$('#chkprivado').is(":checked") )) {
+        if ((data.currentTarget.selectedIndex > 0 && $('#editsw').is(":checked") && !$('#chkprivado').is(":checked"))) {
             var ubigeo = $('#departamento').val() + $('#provincia').val() + data.currentTarget.value
             clear_selects(["establecimiento"], true);
             append_data_select('establecimiento', ubigeo, 'cod_renaes', 5)
             $('#guardar').prop("disabled", false);
         }
-        if (( data.currentTarget.selectedIndex > 0 && $('#chkprivado').is(":checked") )) {
+        if ((data.currentTarget.selectedIndex > 0 && $('#chkprivado').is(":checked"))) {
             $('#guardar').prop("disabled", false);
         } else if ((data.currentTarget.selectedIndex == 0 && $('#chkprivado').is(":checked"))) {
             $('#guardar').prop("disabled", true);
@@ -615,7 +663,7 @@ $(document).ready(function () {
                                     $('#tipo').attr("required", false); $('#ctipo').hide();
 
                                     $('#establecimiento').attr("required", true); $('#cestablecimiento').show();
-                                    disabled_selects(["entidad","departamento", "provincia", "distrito", "establecimiento", "profesion", "regimen"], true);
+                                    disabled_selects(["entidad", "departamento", "provincia", "distrito", "establecimiento", "profesion", "regimen"], true);
                                     // $("#correo").val(data.correo);
                                     // $("#telefono").val(data.telefono);
 
@@ -626,7 +674,7 @@ $(document).ready(function () {
                                     $('#distrito').append(new Option(data.distrito, data.cod_dis, false, false)).val(data.cod_dis).trigger('change');
                                     $('#establecimiento').append(new Option(data.establecimiento, data.c_renaes, false, false)).val(data.c_renaes).trigger('change');
 
-                                    if (data.entidad == "EXTERNO") {
+                                    if (data.entidad == "EXTERNO") { //CARGADO EN LA BD PERO SIN INFORHUS
                                         $('#opcion').attr("disabled", true);
                                         $('#entidad').select2();
                                         $('#entidad').val(data.id_entidad).trigger('change');
@@ -636,13 +684,23 @@ $(document).ready(function () {
                                         $('#regimen').val(data.id_reglab).trigger('change');
                                         $('#regimen').attr("disabled", data.id_reglab == "" ? false : true);
                                         $('#profesion').attr("disabled", data.id_pro == "" ? false : true);
+
+                                        if (data.id_entidad === null) {
+                                            disabled_selects(["entidad"], false);
+                                        }
+
                                         if (data.cod_dep === null) {
                                             $("#editsw").prop("checked", true);
                                             disabled_selects(["departamento", "provincia", "distrito", "establecimiento"], false);
                                         } else {
                                             $("#editsw").prop("checked", false);
                                         }
-                                    } else {
+                                    } else { //ES PERSONAL MINSA CON INFORHUS
+
+                                        //OCULTO OPCIÓN DE ENTIDAD PRIVADA SI ES PERSONAL MINSA
+                                        $("#div-chkprivado").hide();
+                                        $('#chkprivado').prop("disabled", true);
+
                                         $('#opcion').attr("disabled", false);
                                         //$('#entidad').select2();
                                         $('#entidad').val(data.id_entidad).trigger('change');
@@ -878,14 +936,18 @@ $(document).ready(function () {
         var val_ubigeo;
         var v_tipopart = lst_tipos_participante[tipo_participante];
 
+        //NUMERO DE DOCUMENTO
+        txt_dni = $("#dni").val().trim();
+        val_dni = txt_dni == "" || txt_dni == null ? 0 : txt_dni;
+        //FECHA DE NACIMIENTO
+        val_fecnac = $("#fecha").val();
+
         //TIPOS DE PARTICIPANTE: minsa, extranjero, privado
         if (v_tipopart == "extranjero") {
             val_privado = 0;
             val_archivo = 0;
             val_idpliego = 0;
             val_uejec = 0;
-            val_dni = 0;
-            val_fecnac = 0;
             val_entidad = $("#ext_institucion").val();
             val_estab = 0;
             val_idestab = 0;
@@ -895,11 +957,11 @@ $(document).ready(function () {
             val_idcondlab = 0;
             val_ubigeo = 0;
         } else if (v_tipopart == "privado") {
+            val_privado = 0;
+            val_archivo = 0;
             sdata = $dni.data('row');
             val_idpliego = sdata.c_pliego;
             val_uejec = sdata.c_uejecutora;
-            val_dni = $("#dni").val().trim();
-            val_fecnac = $("#fecha").val();
             val_entidad = $("#ext_institucion").val();
             val_prof = $("#ext_profesion").val();
             val_ubigeo = $("#departamento").val() + $("#provincia").val() + $("#distrito").val();
@@ -908,15 +970,13 @@ $(document).ready(function () {
             val_reglab = 0;
             val_condlab = 0;
             val_idcondlab = 0;
-        } else {
+        } else { //ES MINSA O ACREDITADO
             sdata = $dni.data('row');
             cmb = $cmb.data('values');
             val_privado = cmb.privado;
             val_archivo = cmb.archivos;
             val_idpliego = sdata.c_pliego;
             val_uejec = sdata.c_uejecutora;
-            val_dni = $("#dni").val().trim();
-            val_fecnac = $("#fecha").val();
             val_entidad = $("#entidad").val();
             val_estab = $('#establecimiento').select2('data')[0].text;
             val_idestab = $("#establecimiento").val();
@@ -937,6 +997,7 @@ $(document).ready(function () {
                 }
             }
         }
+
         $("#guardar").attr("disabled", true);
         var formElement = document.getElementById("frmGuardar");
         var post = new FormData(formElement);
@@ -1022,7 +1083,7 @@ $(document).ready(function () {
 function init_selects() {
     append_data_select('curso', '', 'id', 0, "---Seleccione un Curso---");
     //SELECT DE PAISES
-    append_data_select('pais', '', 'id', 0, "---Seleccione un País---");
+    append_data_select('pais', '', 'id', 0, "---Seleccione su País de procedencia---");
     append_data_select('departamento', '', 'cod_dep', 2);
     append_data_select('profesion', '', 'id_pro', 1);
     append_data_select('condicion', '', 'id_cond', 6);

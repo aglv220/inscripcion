@@ -46,13 +46,18 @@ if ($CNG->maintenance) {
                 $entidad = $_POST["entidad"];
                 $profesion = $_POST["id_pro"];
 
-                if ($tipo_participante == "extranjero") {
-                    //PAIS SI ES EXTRANJERO
-                    $pais = $_POST["pais"];
+                if($_POST["dni"] == 0 || $_POST["dni"] == "" || $_POST["dni"] == null){
                     $nrodocrandom = random_int(10000000, 99999999);
                     $nro = 9;
                     $dni = $nro . $nrodocrandom;
-                    $fecnac = "1969/01/01";
+                } else {
+                    $dni = $_POST["dni"];   
+                }
+                $fecnac = DateTime::createFromFormat('d/m/Y', $_POST["fecnac"])->format('Y-m-d');
+
+                if ($tipo_participante == "extranjero") {
+                    //PAIS SI ES EXTRANJERO
+                    $pais = $_POST["pais"];
                     $region = "15";
                     $ubigeo = "150101";
                     $regimenlab = "10";
@@ -66,9 +71,7 @@ if ($CNG->maintenance) {
                     $icondicionlab = "CL44";
                     $ruc = "00123456780";
                     $tipo = "";
-                } else if ($tipo_participante == "privado") {
-                    $dni = $_POST["dni"];
-                    $fecnac = DateTime::createFromFormat('d/m/Y', $_POST["fecnac"])->format('Y-m-d');
+                } else if ($tipo_participante == "privado") { 
                     $region = substr($_POST["ubigeo"], 0, 2);
                     $ubigeo = $_POST["ubigeo"];
                     $regimenlab = 10;
@@ -80,11 +83,15 @@ if ($CNG->maintenance) {
                     $iestablecimiento = "01000000";
                     $condicionlab = "";
                     $icondicionlab = "";
-                    $ruc = $_POST["ext_nroruc"];
+                    $txtruc = trim($_POST["ext_nroruc"]);
+                    if($txtruc == "" || $txtruc == null){
+                        $numrandom = random_int(1000000000, 9999999999);
+                        $ruc = 9 . $numrandom;
+                    } else {
+                        $ruc = $txtruc;
+                    }
                     $tipo = "";
-                } else if ($tipo_participante == "minsa") {
-                    $dni = $_POST["dni"];
-                    $fecnac = DateTime::createFromFormat('d/m/Y', $_POST["fecnac"])->format('Y-m-d');
+                } else if ($tipo_participante == "minsa" || $tipo_participante == "acreditado") {
                     $region = substr($_POST["ubigeo"], 0, 2);
                     $ubigeo = $_POST["ubigeo"];
                     $regimenlab = $_POST["id_reglab"];

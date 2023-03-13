@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8" />
     <title>Inscripciones - Escuela Nacional de Salud Pública</title>
@@ -27,6 +28,7 @@
     <link href="<?php echo $CNG->wwwroot; ?>/assets/css/estilos.css" rel="stylesheet" type="text/css" />
     <script src="<?php echo $CNG->wwwroot; ?>/assets/js/funciones-headerV2.js"></script>
 </head>
+
 <body>
     <!-- Begin page -->
     <div id="wrapper">
@@ -47,12 +49,9 @@
             </div>
         </div>
         <!-- end Topbar -->
-
-
         <!-- ============================================================== -->
         <!-- Start Page Content here -->
         <!-- ============================================================== -->
-
         <div class="content-page" style="margin-left: 5px !important;">
             <div class="content">
 
@@ -112,6 +111,9 @@
                                         <span class="input-group-text" id='spinload0' hidden><i class="spinner-border text-primary" style="height:1.3rem; width:1.3rem;" role="status"></i></span>
                                     </div>
                                 </div>
+
+                                <div class="alert alert-danger alert-dismissible bg-danger text-white border-0 fade show msg-aviso mt-2" role="alert" style="display:none;"></div>
+
                             </div> <!-- end card-body-->
                         </div> <!-- end col-->
                     </div>
@@ -156,11 +158,11 @@
                                         <div class="form-group position-relative col-md-12" id="div-chkextranjero">
                                             <label for="editar">¿Es usted extranjero(a)?</label>
 
-                                            <a class="btn btn-primary tippy-tooltip tooltip-style animate__animated animate__pulse animate__infinite infinite" data-plugin="tippy" data-tippy-placement="top" title="Active esta opción solo si usted no es del Perú y no cuenta con DNI. <i>[Only activate this option if you aren't from Perú and don't have a Peruvian National Identity Document]<i>"><i class="fas fa-question"></i></a>
+                                            <a class="btn btn-primary tippy-tooltip tooltip-style animate__animated animate__pulse animate__infinite infinite" data-plugin="tippy" data-tippy-placement="top" title="Active esta opción solo si usted es Extranjero y no cuenta con DNI del Perú ni con Carnet de Extranjería. <i>[Activate this option only if you are a foreigner and do not have a Peruvian national identity document or a Foreigner's Card]<i>"><i class="fas fa-question"></i></a>
 
                                             <div class="custom-control custom-switch form-control border-0">
                                                 <input type="checkbox" class="custom-control-input" id="chkextranjero">
-                                                <label class="custom-control-label" for="chkextranjero">Soy extranjero(a) y no cuento con DNI peruano</label>
+                                                <label class="custom-control-label" for="chkextranjero">Soy extranjero(a) y no cuento con DNI del Perú ni con Carnet de Extranjería</label>
                                             </div>
                                         </div>
                                     </div>
@@ -168,27 +170,25 @@
 
                                     <div class="form-row" id="div-dniperu"> <!-- DIV DNI PERU -->
                                         <div class="form-group position-relative col-md-4">
-                                            <label for="dni">Documento Nacional de Identidad</label>
-                                            <input type="text" class="form-control" data-parsley-minlength="8" maxlength="9" id="dni" name="dni" placeholder="DNI" required>
+                                            <label id="label-dni" for="dni">Documento Nacional de Identidad</label>
+
+                                            <a class="btn btn-success tippy-tooltip tooltip-style-v3 animate__animated animate__pulse animate__infinite infinite dni-tooltip" data-plugin="tippy" data-tippy-placement="top" title="Solo si no cuenta con ningún tipo de documento de identidad <b>(pasaporte, pase temporal, documento de otro país, etc.)</b> puede dejar este campo vacío, caso contrario, es <b>altamente recomendado</b> que ingrese este dato"><i class="fas fa-info"></i></a>
+
+                                            <input type="text" class="form-control" data-parsley-minlength="8" maxlength="9" id="dni" name="dni" onkeypress="return numeros_enteros(event);" placeholder="DNI" required>
                                         </div>
                                         <div class="form-group position-relative col-md-4">
                                             <label for="fecha">Fecha de Nacimiento</label>
                                             <div class="input-group">
-                                                <input type="text" class="form-control" data-toggle="input-mask" data-mask-format="00/00/0000" data-date-autoclose="true" maxlength="10" placeholder="dd/mm/aaaa" name="fecha" id="fecha">
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text"><i class="ti-calendar"></i></span>
-                                                </div>
+                                                <input type="text" class="form-control" data-toggle="input-mask" data-mask-format="00/00/0000" data-date-autoclose="true" maxlength="10" placeholder="dd/mm/aaaa" name="fecha" id="fecha" required>
                                                 <div class="btn btn-success waves-effect waves-light" id="validar">
                                                     <span class="spinner-border spinner-border-sm mr-1" id="loading" hidden></span>
                                                     Validar
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <!-- INICIO - SELECCION DE PAIS -->
-                                    <div class="form-row mostrar">
+                                         <!-- INICIO - SELECCION DE PAIS -->
                                         <div class="form-group position-relative col-md-4" id="div-pais">
-                                            <label for="pais">Seleccione su País de procedencia</label>
+                                            <label for="pais">País de procedencia</label>
                                             <div class="input-group">
                                                 <select class="select2 form-control" data-live-search="false" name="pais" id="pais">
                                                 </select>
@@ -197,8 +197,8 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <!-- END - SELECCION DE PAIS -->
+                                        <!-- END - SELECCION DE PAIS -->
+                                    </div>                                    
                                     <div class="form-row mostrar">
                                         <div class="form-group position-relative col-md-4">
                                             <label for="apepat">Apellido Paterno</label>
@@ -289,13 +289,13 @@
                                     <!-- INICIO - DIV CHECKBOX ENTIDAD PRIVADA -->
                                     <div class="form-row mostrar">
                                         <div class="form-group position-relative col-md-12 mt-2" id="div-chkprivado">
-                                            <label for="editar">¿Usted pertenece a una Institución Privada?</label>
+                                            <label for="editar">¿Usted pertenece a una Institución Privada u otra Institución Pública?</label>
 
-                                            <a class="btn btn-primary tippy-tooltip tooltip-style animate__animated animate__pulse animate__infinite infinite" data-plugin="tippy" data-tippy-placement="top" title="Active esta opción solo si usted no trabaja para el Ministerio de Salud y en su lugar trabaja para una empresa del sector privado. <i>[Activate this option only if you do not work for the Ministry of Health and instead work for a private sector company]<i>"><i class="fas fa-question"></i></a>
+                                            <a class="btn btn-primary tippy-tooltip tooltip-style animate__animated animate__pulse animate__infinite infinite" data-plugin="tippy" data-tippy-placement="top" title="Active esta opción solo si usted no trabaja para el Ministerio de Salud y en su lugar trabaja para una empresa del sector privado u otra entidad del estado. <i>[Enable this option only if you do not work for the Ministry of Health and instead work for a private sector company or other state entity]<i>"><i class="fas fa-question"></i></a>
 
                                             <div class="custom-control custom-switch form-control border-0">
                                                 <input type="checkbox" class="custom-control-input" id="chkprivado">
-                                                <label class="custom-control-label" for="chkprivado">Pertenezco a una Institución Privada y deseo registrar mis datos laborales manualmente</label>
+                                                <label class="custom-control-label" for="chkprivado">Pertenezco a una Institución Privada u otra Entidad del Estado, por lo cual deseo registrar mis datos laborales manualmente</label>
                                             </div>
                                         </div>
                                     </div>
@@ -309,6 +309,9 @@
                                         <div class="form-row">
                                             <div class="form-group position-relative col-md-4 div-nroruc-ext">
                                                 <label for="ext_nroruc">Nro. RUC de Centro Laboral</label>
+
+                                                <a class="btn btn-success tippy-tooltip tooltip-style-v3 animate__animated animate__pulse animate__infinite infinite" data-plugin="tippy" data-tippy-placement="top" title="Solo si desconoce el RUC de la Institución donde labora, puede dejar vacío este campo, caso contrario, es <b>altamente recomendado</b> que ingrese este dato"><i class="fas fa-info"></i></a>
+
                                                 <input type="text" class="form-control" id="ext_nroruc" name="ext_nroruc" placeholder="Ingrese el número de RUC de la Institución donde labora" onkeypress="return numeros_enteros(event);" data-parsley-minlength="11" maxlength="11">
                                             </div>
                                             <div class="form-group position-relative col-md-4">
@@ -326,7 +329,7 @@
                                     <div class="div-laboral-minsa">
                                         <p class="sub-header text-primary font-weight-bold">
                                             <!--En caso usted sea personal de Salud que no pertenece al MINSA, seleccione su <b>Entidad</b> correspondiente y luego <b>seleccione el establecimiento en donde labora</b>-->
-                                            Si usted es personal MINSA registrado correctamente en INFORHUS los datos a continuación se rellenarán automáticamente, caso contrario usted deberá completar su información laboral con las opciones disponibles. Si sus datos se rellenaron automáticamente, verifique que sus datos esten consignados correctamente (en este caso, el sistema no le permitirá editar ningún dato de información laboral), ya que en caso no sea así, deberá actualizar su información de INFORHUS (comunicandose a la central del MINSA).
+                                            Si usted es personal MINSA registrado correctamente en INFORHUS los datos a continuación se rellenarán automáticamente, caso contrario usted deberá completar su información laboral con las opciones disponibles. Si sus datos se rellenaron automáticamente, verifique que sus datos esten consignados correctamente (en este caso, el sistema no le permitirá editar ningún dato de información laboral), ya que en caso no sea así, deberá actualizar su información de INFORHUS (comunicándose a la central del MINSA).
                                         </p>
 
                                         <div class="form-row">
@@ -489,8 +492,9 @@
                                     <div class="form-row mt-2" id="div-guardar">
                                         <div class="form-group position-relative col-md-6">
                                             <input class="btn btn-primary waves-effect waves-light" type="submit" id="guardar" form="frmGuardar" value="Registrarse">
-
-                                            <a class="btn btn-danger tippy-tooltip tooltip-style-v2 animate__animated animate__pulse animate__infinite infinite btn-info-laboral" data-plugin="tippy" data-tippy-placement="top" title="Para poder activar nuevamente el <font class='text-primary'>Botón <b>'Registrarse'</b></font>, de clic nuevamente sobre el <font class='text-success'>Botón de color verde <b>'Validar'</b></font> de la parte superior, caso contrario, <b>Si el sistema se lo permite</b>, complete todos los datos laborales faltantes"><i class="fas fa-exclamation"></i></a>
+                                            <a class="btn btn-danger tippy-tooltip tooltip-style-v2 animate__animated animate__pulse animate__infinite infinite btn-info-laboral" data-plugin="tippy" data-tippy-placement="top" title="<p align='justify'>Para poder activar nuevamente el <font class='text-primary'>Botón <b>'Registrarse'</b></font>, de clic nuevamente sobre el <font class='text-success'>Botón de color verde <b>'Validar'</b></font> de la parte superior (mayormente para personal MINSA), caso contrario pruebe cualquiera de estas 2 opciones <b>(Si el sistema lo permite)</b>:
+                                            <br><b>a.</b> Complete todos los datos laborales faltantes y de clic en el <font class='text-primary'>Botón <b>'Registrarse'</b></font>.
+                                            <br><b>b.</b> Complete los datos laborales solicitados y luego seleccione el Departamento, Provincia y Distrito de su Lugar de Trabajo, realizando ello, el <font class='text-primary'>Botón <b>'Registrarse'</b></font> se activará.</p>"><i class="fas fa-exclamation"></i></a>
                                             <!-- <span class="spinner-border spinner-border-sm mr-1" id="saving" hidden></span> -->
                                         </div>
                                     </div>

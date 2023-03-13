@@ -76,10 +76,10 @@ switch ($_POST['function']) {
         echo json_encode($data, JSON_FORCE_OBJECT);
         break;
 
-    case 'getCursosTransversales':
+    case 'getCursosLibreAcceso':
         require_once($CNG->dirroot . '/include/controller/curso.php');
         $p = new cursos();
-        $data = $p->getCursosTransversales();
+        $data = $p->getCursosLibreAcceso();
         if (count($data) > 0) {
             echo json_encode($data);
         } else {

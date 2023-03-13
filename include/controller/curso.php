@@ -6,7 +6,7 @@ class cursos extends DB{
     
     public function getAllCursos()
     {
-        $query = $this->connect()->prepare("SELECT id, CONCAT(nombre_largo, ' ', DATE_FORMAT(fecha_inicio_ins,'%d de %M'),' - ', DATE_FORMAT(fecha_fin_ins,'%d de %M')) AS curso, fecha_inicio_ins, fecha_fin_ins FROM tbl_curso WHERE date(now()) BETWEEN date(fecha_inicio_ins) AND date(fecha_fin_ins) AND estado = 1 AND (curso_libre = 0 OR curso_libre IS NULL); ");
+        $query = $this->connect()->prepare("SELECT id, CONCAT(nombre_largo, ' ', DATE_FORMAT(fecha_inicio_ins,'%d de %M'),' - ', DATE_FORMAT(fecha_fin_ins,'%d de %M')) AS curso, fecha_inicio_ins, fecha_fin_ins FROM tbl_curso WHERE date(now()) BETWEEN date(fecha_inicio_ins) AND date(fecha_fin_ins) AND estado = 1;");//AND (curso_libre = 0 OR curso_libre IS NULL)
         $query->execute();
 
         return $query->fetchAll(PDO::FETCH_ASSOC);
@@ -20,9 +20,9 @@ class cursos extends DB{
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getCursosTransversales()
+    public function getCursosLibreAcceso()
     {
-        $query = $this->connect()->prepare("SELECT id FROM tbl_curso WHERE date(now()) BETWEEN date(fecha_inicio_ins) AND date(fecha_fin_ins) AND curso_tipo = 0");
+        $query = $this->connect()->prepare("SELECT id FROM tbl_curso WHERE date(now()) BETWEEN date(fecha_inicio_ins) AND date(fecha_fin_ins) AND curso_libre = 1;"); //AND curso_tipo = 0
         $query->execute();
         return $query->fetchAll(PDO::FETCH_COLUMN);
     }
@@ -40,7 +40,7 @@ class cursos extends DB{
 
     public function getCursoSet($id)
     {
-        $query = $this->connect()->prepare("SELECT id, r_archivo, r_privado, r_descrip, d_descrip FROM tbl_curso WHERE id = :id");
+        $query = $this->connect()->prepare("SELECT id, r_archivo, r_privado, r_descrip, d_descrip, curso_tipo, curso_detalle, curso_libre FROM tbl_curso WHERE id = :id");
         $query->bindParam(":id", $id);
         $query->execute();
 
