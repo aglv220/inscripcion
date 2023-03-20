@@ -3,6 +3,27 @@ require_once(__DIR__ . '/../../config/config.php');
 //require_once($CNG->dirroot .'/include/controller/ubigeo.php');
 
 switch ($_POST['function']) {
+
+    case 'ConsultaCursosParticipantes':
+        require_once($CNG->dirroot . '/include/controller/alumno.php');
+        $a = new alumno();
+        $post_doc = $_POST['search_doc'];
+        $post_mail = $_POST['search_mail'];
+        $nrodoc = $post_doc == "" || $post_doc == null ? false : $post_doc;
+        $email = $post_mail == "" || $post_mail == null ? false : $post_mail;
+        $apellido = $_POST['search_ape'];
+        $data = $a->ConsultaCursosParticipantes($nrodoc, $email, $apellido);
+
+        $validar_data = count($data) > 0 ? true : false;
+        if ($validar_data) {
+            header('Content-type: application/json; charset=utf-8');
+            echo json_encode($data, JSON_FORCE_OBJECT);
+        } else {
+            header('Content-type: application/json; charset=utf-8');
+            echo json_encode($validar_data, JSON_FORCE_OBJECT);
+        }
+        break;
+
     case 'getUbigeoDet':
         require_once($CNG->dirroot . '/include/controller/ubigeo.php');
         $p = new ubigeo();

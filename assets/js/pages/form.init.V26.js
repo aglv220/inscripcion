@@ -5,12 +5,14 @@ $(document).ready(function () {
     init_selects();
     //INICIALIZACIÓN DE TOOLTIPS
     tippy('.tippy-tooltip');
+    tippy('.tippy-tooltip-tab');
     //INICIALIZACIÓN DE FORMULARIOS
     $(".parsley-form").parsley()
 
     /******** VARIABLES GLOBALES *******/
     var $dni = $('#dni');
     var $editor = $('#frmGuardar');
+    var $frmuser = $('#frmListCursos');
     var $cmb = $('#curso');
     var $btn_info_laboral = $('.btn-info-laboral');
     var $lbl_dni = $('#label-dni');
@@ -27,9 +29,26 @@ $(document).ready(function () {
     var tipo_participante = 0;
     var participante_noinforhus = false;
     var validar_rucxsunat = false;
+    var is_curso_libre = false;
     //var cursos_libreacceso = [0];
 
+    //CAMPOS DE BUSQUEDA DE INSCRIPCIONES
+    var search_doc = $('input[name="search_doc"]');
+    var search_mail = $('input[name="search_mail"]');
+    var search_ape = $('input[name="search_ape"]');
+    var search_btn = $('#btn-search');
+    var chkuseemail = $('#chkuseemail');
+    var div_search_doc = $('#id-search-doc');
+    var div_search_email = $('#id-search-email');
+
+    //$('#table-search').DataTable();
+
     /******** DATOS POR DEFECTO *******/
+    //BUSQUEDA DE INSCRIPCIONES
+    chkuseemail.prop("checked", false);
+    search_mail.prop("required", false);
+    div_search_email.hide();
+
     //DATOS PERSONALES
     $('.mostrar').hide();
     //DIV LABORAL EXTRANJERO / PRIVADO
@@ -45,8 +64,9 @@ $(document).ready(function () {
     $('.div-laboral-minsa').hide();
     $('#chkextranjero').prop("disabled", true);
     $('#guardar').prop("disabled", false);
-    //CHK-PRIVADO
-    $('#chkprivado').prop("disabled", true);
+    //SECCION-PRIVADO
+    mostrar_seccion_privado(false);
+
     $('.div-ubigeo').show();
     //NRO RUC MANUAL
     $('.div-nroruc-ext').hide();
@@ -94,9 +114,36 @@ $(document).ready(function () {
     $('#dni').on('input', function () {
         var vacio = $(this).prop('value') === '';
         if (vacio) {
+            //TIPO DE PARTICIPANTE
+            tipo_participante = 0; //MINSA
+
             $('.mostrar').hide();
             $('#crdlaboral').collapse("hide");
             clear_inputs(["apepat", "apemat", "nombres", "apecas", "fecha"]);
+
+            if (is_curso_libre) { //ES CURSO LIBRE
+                //CHKEXTRANJERO
+                $('#chkextranjero').prop("checked", false);
+                //DIV PAIS
+                $("#div-pais").hide();
+                $('#div-pais select[name="pais"]').prop("required", false);
+                $('#div-pais select[name="pais"]').prop("disabled", true);
+                //RESETEAR SELECCION DE PAIS
+                $('#pais').val(null).trigger('change');
+                //CHKPRIVADO
+                mostrar_seccion_privado(true);
+                //CAMPOS PARA VALIDAR POR RENIEC
+                $('input[name="dni"]').prop("required", true);
+                $lbl_dni.html(txt_lbl_dni_peru);
+                $tooltip_doc.hide();
+                $('input[name="dni"]').attr("data-parsley-minlength", 8);
+                $('input[name="dni"]').prop("maxlength", 9);
+                $('input[name="dni"]').prop("placeholder", "Documento Nacional de Identidad del Perú");
+                //BTN VALIDAR DNI
+                $("#validar").show();
+                $("#validar").attr("disabled", false);
+                $("#loading").attr("hidden", true);
+            }
         }
     });
 
@@ -108,12 +155,33 @@ $(document).ready(function () {
         }) : $(e).mask(n)
     })
 
+    //CHECKBOX USE EMAIL
+    chkuseemail.on('change', function () {
+        if (!chkuseemail.is(":disabled")) {
+            search_mail.val("");
+            search_doc.val("");
+            if (chkuseemail.is(":checked")) {
+                div_search_doc.hide();
+                div_search_email.show();
+                search_mail.prop("required", true);
+                search_doc.prop("required", false);
+            } else {
+                div_search_doc.show();
+                div_search_email.hide();
+                search_mail.prop("required", false);
+                search_doc.prop("required", true);
+            }
+        }
+    });
+
     //CHECKBOX PARTICIPANTE EXTRANJERO
     $("#chkextranjero").on('change', function () {
         if (!$('#chkextranjero').is(":disabled")) {
             //LIMPIAR CONTROLES DE DNI Y FECHA DE NACIMIENTO
             $('input[name="dni"]').val("");
             $('input[name="fecha"]').val("");
+            //RESETEAR SELECCION DE PAIS
+            $('#pais').val(null).trigger('change');
             //VALIDAR CAMBIOS EN EL CHECKBOX EXTRANJERO
             if ($('#chkextranjero').is(":checked")) { //PARTICIPANTE EXTRANJERO
                 //TIPO DE PARTICIPANTE
@@ -155,10 +223,9 @@ $(document).ready(function () {
                 //BOTON INFO LABORAL
                 $btn_info_laboral.hide();
 
-                //CHK-PRIVADO                
-                $('#div-chkprivado').hide();
-                $('#chkprivado').prop("checked", false);
-                $('#chkprivado').prop("disabled", true);
+                //CHK-PRIVADO
+                mostrar_seccion_privado(false);
+
                 //LIMPIAR CONTROLES DE DATOS PERSONALES
                 $('div.mostrar input').val("");
                 $('div.mostrar input').prop("readonly", false);
@@ -228,9 +295,7 @@ $(document).ready(function () {
                 //SECCION DE DATOS PERSONALES
                 $('.mostrar').hide();
                 //CHK-PRIVADO
-                $('#div-chkprivado').show();
-                $('#chkprivado').prop("checked", false);
-                $('#chkprivado').prop("disabled", false);
+                mostrar_seccion_privado(true);
                 //SECCIÓN LABORAL
                 $('#crdlaboral').collapse("hide");
                 //DIV LABORAL EXTRANJERO / PRIVADO
@@ -378,11 +443,15 @@ $(document).ready(function () {
                 $(".div-cod-modular").hide();
                 $("#cod_modular").prop("required", false);
             }
+
+            //CAMPOS POR DEFECTO - DIV CHKEXTRANJERO
+            $("#div-chkextranjero").hide();
             //CAMPOS POR DEFECTO - CHKPRIVADO
             $('#chkprivado').prop("checked", false);
             //CAMPOS POR DEFECTO - CHKEXTRANJERO
             $('#chkextranjero').prop("checked", false);
-            $("#div-chkextranjero").hide();
+
+            //CAMPOS POR DEFECTO - PAIS
             $("#div-pais").hide();
             $('#div-pais select[name="pais"]').prop("required", false);
             $('#div-pais select[name="pais"]').prop("disabled", true);
@@ -431,16 +500,16 @@ $(document).ready(function () {
                         $('#chkextranjero').prop("disabled", false);
                         $(".txt-datospers").html(txtdatospers1);
                         //MOSTRAR CHECKBOX DE PRIVADO
-                        $("#div-chkprivado").show();
-                        $('#chkprivado').prop("disabled", false);
+                        mostrar_seccion_privado(true);
+                        is_curso_libre = true;
                     } else { //CURSO DE INSCRIPCIÓN SOLO MINSA
                         //OCULTAR CHECKBOX DE EXTRANJERO
                         $("#div-chkextranjero").hide();
                         $('#chkextranjero').prop("disabled", true);
                         $(".txt-datospers").html(txtdatospers);
                         //OCULTAR CHECKBOX DE PRIVADO
-                        $("#div-chkprivado").hide();
-                        $('#chkprivado').prop("disabled", true);
+                        mostrar_seccion_privado(false);
+                        is_curso_libre = false;
                     }
 
                     if (values.curso_detalle != null && values.curso_detalle != "") {
@@ -574,6 +643,10 @@ $(document).ready(function () {
         var dni = $("#dni").val();
         var fecha = $("#fecha").val();
 
+        if (!is_curso_libre) { //SI NO ES UN CURSO LIBRE (false)
+            mostrar_seccion_privado(false);
+        }
+
         if (dni != "" && fecha != "") {
             $("#loading").attr("hidden", false);
             $("#validar").attr("disabled", true);
@@ -674,6 +747,11 @@ $(document).ready(function () {
                                     $('#distrito').append(new Option(data.distrito, data.cod_dis, false, false)).val(data.cod_dis).trigger('change');
                                     $('#establecimiento').append(new Option(data.establecimiento, data.c_renaes, false, false)).val(data.c_renaes).trigger('change');
 
+                                    //OCULTO OPCIÓN SI EXISTE EN LA BD
+                                    if (is_curso_libre) {
+                                        mostrar_seccion_privado(false);
+                                    }
+
                                     if (data.entidad == "EXTERNO") { //CARGADO EN LA BD PERO SIN INFORHUS
                                         $('#opcion').attr("disabled", true);
                                         $('#entidad').select2();
@@ -685,7 +763,7 @@ $(document).ready(function () {
                                         $('#regimen').attr("disabled", data.id_reglab == "" ? false : true);
                                         $('#profesion').attr("disabled", data.id_pro == "" ? false : true);
 
-                                        if (data.id_entidad === null) {
+                                        if (data.id_entidad === null) { //SI EL CAMPO ENTIDAD NO EXISTE EN LA BD
                                             disabled_selects(["entidad"], false);
                                         }
 
@@ -695,11 +773,9 @@ $(document).ready(function () {
                                         } else {
                                             $("#editsw").prop("checked", false);
                                         }
-                                    } else { //ES PERSONAL MINSA CON INFORHUS
+                                        console.log("EXTERNO");
 
-                                        //OCULTO OPCIÓN DE ENTIDAD PRIVADA SI ES PERSONAL MINSA
-                                        $("#div-chkprivado").hide();
-                                        $('#chkprivado').prop("disabled", true);
+                                    } else { //ES PERSONAL MINSA CON INFORHUS
 
                                         $('#opcion').attr("disabled", false);
                                         //$('#entidad').select2();
@@ -713,7 +789,6 @@ $(document).ready(function () {
                                         $('#regimen').attr("required", true);
                                         $('#condicion').append(new Option(data.condlab, data.id_condlab, false, false)).val(data.id_condlab).trigger('change'); $('#condicion').val(data.id_condlab)
                                         $('#condicion').attr("required", true);
-
                                         //TIPO DE PARTICIPANTE
                                         tipo_participante = 0; //ES MINSA
                                     }
@@ -730,6 +805,11 @@ $(document).ready(function () {
                                     //$('#entidad').select2();
                                     $('#entidad').val(null).trigger('change');
 
+                                    /** ACTIVAR CHECKBOX DE ENTIDAD PRIVADA **/
+                                    if (is_curso_libre) {
+                                        mostrar_seccion_privado(true);
+                                    }
+
                                     if (cmb.privado == "1") {
                                         $("#editsw").prop("checked", false);
                                         $('#establecimiento').attr("required", false); $('#cestablecimiento').hide();
@@ -738,6 +818,9 @@ $(document).ready(function () {
                                         $('#ruc').attr("required", true); $('#cruc').show();
                                         $('#rsocial').attr("required", true); $('#crsocial').show();
                                         $('#tipo').attr("required", true); $('#ctipo').show();
+
+                                        /*** VERIFICAR POR QUE NO SE ACTIVA EL CHKPRIVADO PARA PERSONAS SIN DATOS EN LA BD ***/
+                                        console.log("CMB-PRIVADO 1");
                                     } else {
                                         $("#editsw").prop("checked", true);
                                         $('#establecimiento').attr("required", true); $('#cestablecimiento').show();
@@ -745,6 +828,8 @@ $(document).ready(function () {
                                         $('#ruc').attr("required", false); $('#cruc').hide();
                                         $('#rsocial').attr("required", false); $('#crsocial').hide();
                                         $('#tipo').attr("required", false); $('#ctipo').hide();
+
+                                        console.log("CMB-PRIVADO 2");
                                     }
 
                                     //TIPO DE PARTICIPANTE
@@ -877,7 +962,6 @@ $(document).ready(function () {
                             //var cmb = $cmb.data('values');
                             $("#rsocial").val(data.rsocial);
                             //$('#departamento').val(data.ubigeo.substring(0, 2)).trigger('change');
-                            console.log(data.ubigeo);
 
                             $('#departamento').val(data.departamento[0]).trigger('change');
                             clear_selects(["provincia", "distrito"], true);
@@ -1078,7 +1162,148 @@ $(document).ready(function () {
             }
         });
     })
+
+    function badge_estado(estado) {
+        var hmtl_badge = "<span class='badge rounded-pill";
+        var tipo_badge = "dark";
+        switch (estado) {
+            case "CURSO EN EJECUCIÓN":
+                tipo_badge = "success";
+                break;
+            case "EN FASE DE INSCRIPCIÓN":
+                tipo_badge = "primary";
+                break;
+            case "CIERRE DE INSCRIPCIÓN":
+                tipo_badge = "warning";
+                break;
+            case "CURSO FINALIZADO":
+                tipo_badge = "danger";
+                break;
+        }
+        hmtl_badge += " bg-" + tipo_badge + "'>" + estado + "</span>";
+        return hmtl_badge;
+    }
+
+    function enlace_curso(estado, codmoodle) {
+        html_enlace = '<a class="badge badge-outline-purple rounded-pill"';
+        if (estado == "CURSO EN EJECUCIÓN") {
+            if (codmoodle != "" && codmoodle != null) {
+                enlace_plataforma = 'http://pees.minsa.gob.pe/course/view.php?id=';
+                html_enlace += ' href="' + enlace_plataforma + codmoodle + '" target="_blank">IR AL ENLACE';
+            } else {
+                html_enlace += '>NO ENCONTRADO';
+            }
+        } else {
+            html_enlace += '>NO DISPONIBLE';
+        }
+        html_enlace += '</a>'
+        return html_enlace;
+    }
+
+    function msg_alerta(tipo, titulo) {
+        Swal.fire({
+            title: titulo,
+            type: tipo,
+            showCloseButton: 0,
+            showCancelButton: 0,
+            showConfirmButton: 0,
+            allowOutsideClick: false
+        });
+    }
+
+    $frmuser.submit(function (e) {
+        e.preventDefault();
+        if (this.checkValidity && !this.checkValidity()) return;
+
+        //$("#guardar").attr("disabled", true);
+
+        var formElement = document.getElementById("frmListCursos");
+        var post = new FormData(formElement);
+        post.append("function", 'ConsultaCursosParticipantes');
+
+        $.ajax({
+            type: 'POST',
+            url: $(this).attr('action'),
+            data: post,
+            contentType: false,
+            dataType: "json",
+            cache: false,
+            processData: false,
+            beforeSend: function () {
+                msg_alerta("info", "Buscando información");
+            },
+            success: function (data) {
+                var a = $("#table-search").DataTable();
+                a.destroy();
+                tabla = "";
+                if (data == false) {
+                    Swal.close();
+                    Swal.fire({
+                        title: "No se encontró información",
+                        text: "Los datos ingresados no retornaron resultados",
+                        type: "error",
+                        confirmButtonClass: "btn btn-confirm mt-2"
+                    }).then((result) => {
+                        if (result) {
+                            Swal.close();
+                        }
+                    });
+                } else {                    
+                    $.each(data, function (i, item) {
+                        tabla += "<tr>";
+                        tabla += "<td>" + item.curso + "</td>";
+                        tabla += "<td>" + item.cursotipo + "</td>";
+                        tabla += "<td>" + item.ins_inicio + "</td>";
+                        tabla += "<td>" + item.ins_fin + "</td>";
+                        tabla += "<td>" + item.ejec_inicio + "</td>";
+                        tabla += "<td>" + item.ejec_fin + "</td>";
+                        tabla += "<td>" + item.fecins + "</td>";
+                        tabla += "<td>" + badge_estado(item.estado) + "</td>";
+                        tabla += "<td>" + enlace_curso(item.codmoodle, item.estado) + "</td>";
+                        tabla += "<td>" + item.cursodetalle + "</td>";
+                        tabla += "</tr>";
+                    });
+                    Swal.close();
+                }
+                $("#bodytable").html(tabla);
+                var a = $("#table-search").DataTable({
+                    responsive: true,
+                    lengthChange: !1,
+                    scrollY: "400px",
+                    scrollX: !0,
+                    scrollCollapse: !0,
+                    paging: !1,
+                    language: {
+                        paginate: {
+                            previous: "<i class='mdi mdi-chevron-left'>",
+                            next: "<i class='mdi mdi-chevron-right'>"
+                        }
+                    },
+                    drawCallback: function () {
+                        $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
+                    }
+                });
+                a.buttons().container().appendTo("#table-search_wrapper .col-md-6:eq(0)");
+
+                search_mail.val("");
+                search_doc.val("");
+                search_ape.val("");
+            }
+        });
+    })
+
 });
+
+function mostrar_seccion_privado(estado = true) {
+    $('#chkprivado').prop("checked", false);
+    if (estado) {
+        $("#div-chkprivado").show();
+        $('#chkprivado').prop("disabled", false);
+    } else {
+        $("#div-chkprivado").hide();
+        $('#chkprivado').prop("disabled", true);
+    }
+}
 
 function init_selects() {
     append_data_select('curso', '', 'id', 0, "---Seleccione un Curso---");

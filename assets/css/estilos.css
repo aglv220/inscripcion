@@ -19,3 +19,15 @@
     padding: 0.2rem 0.55rem 0.2rem 0.55rem;
     border: 1px solid #323a46;
 }
+
+#formulario-inscripcion .card-box {
+    border: 1px solid #aac7e3 !important;
+    border-radius: 0.5rem !important;
+}
+
+.badge-outline-purple {
+    color: #6559cc;
+    border: 1px solid #6559cc;
+    background-color: transparent;
+    box-shadow: none;
+}

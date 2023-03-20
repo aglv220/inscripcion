@@ -1,5 +1,11 @@
 $(document).ready(function(){
-    $("#basic-datatable").DataTable({
+    var a = $("#table-search").DataTable({
+        //lengthChange:!1,
+        //buttons:["copy"],
+        responsive: true,
+        scrollY:"400px",
+        scrollCollapse:!0,
+        paging:!1,
         language:{
             paginate:{
                 previous:"<i class='mdi mdi-chevron-left'>",
@@ -10,23 +16,10 @@ $(document).ready(function(){
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
         }
     });
-
-    var a=$("#datatable-buttons").DataTable({
-        lengthChange:!1,
-        buttons:["copy"],
-        language:{
-            paginate:{
-                previous:"<i class='mdi mdi-chevron-left'>",
-                next:"<i class='mdi mdi-chevron-right'>"
-            }
-        },
-        drawCallback:function(){
-            $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
-        }
-    });
-
     $("#selection-datatable").DataTable({
-        select:{style:"multi"},
+        select:{
+            style:"multi"
+        },
         language:{
             paginate:{
                 previous:"<i class='mdi mdi-chevron-left'>",
@@ -49,12 +42,13 @@ $(document).ready(function(){
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
         }
     }),
-    a.buttons().container().appendTo("#datatable-buttons_wrapper .col-md-6:eq(0)"),
+    /*a.buttons().container().appendTo("#table-search_wrapper .col-md-6:eq(0)"),
     $("#alternative-page-datatable").DataTable({
-        pagingType:"full_numbers",drawCallback:function(){
+        pagingType:"full_numbers",
+        drawCallback:function(){
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
         }
-    }),
+    }),*/
     $("#scroll-vertical-datatable").DataTable({
         scrollY:"350px",
         scrollCollapse:!0,
@@ -99,18 +93,18 @@ $(document).ready(function(){
         language:{
             paginate:{
                 previous:"<i class='mdi mdi-chevron-left'>",
-                next:"<i class='mdi mdi-chevron-right'>"
+                next:"<i class='mdi mdi-chevron-right'>"}
+            },
+            drawCallback:function(){
+                $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
+            },
+            createdRow:function(a,i,e){
+                15e4<1*i[5].replace(/[\$,]/g,"")&&$("td",a).eq(5).addClass("text-danger")
             }
-        },
-        drawCallback:function(){
-            $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
-        },
-        createdRow:function(a,i,e){
-            15e4<1*i[5].replace(/[\$,]/g,"")&&$("td",a).eq(5).addClass("text-danger")
-        }
-    }),
-    $("#state-saving-datatable").DataTable({
-        stateSave:!0,language:{
+        }),
+        $("#state-saving-datatable").DataTable({
+            stateSave:!0,
+            language:{
             paginate:{
                 previous:"<i class='mdi mdi-chevron-left'>",
                 next:"<i class='mdi mdi-chevron-right'>"

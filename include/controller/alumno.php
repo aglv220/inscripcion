@@ -5,6 +5,26 @@ require_once($CNG->dirroot .'/include/controller/db.php');
 
 class alumno extends DB{
 
+    public function ConsultaCursosParticipantes($nrodoc,$correo,$apellido)
+    {
+        if($nrodoc == false){
+            $bind_field = "correo";
+            $bind_value = $correo;
+        } else if($correo == false){
+            $bind_field = "numdoc";
+            $bind_value = $nrodoc;  
+        }
+
+        $query = $this->connect()->prepare("SELECT * FROM ensapadmin_db.vw_consulta_alumno_curso 
+            WHERE cursoyear = YEAR(NOW()) AND " . $bind_field . " = :".$bind_field." AND ( apepat LIKE CONCAT('%', :apepat, '%') OR apemat LIKE CONCAT('%', :apemat, '%') );");
+
+        $query->bindParam(":".$bind_field, $bind_value);      
+        $query->bindParam(":apepat", $apellido);
+        $query->bindParam(":apemat", $apellido);                
+        $query->execute();
+        return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function getAllParticipantes()
     {
         $query = $this->connect()->prepare('SELECT dni, nombres, apepat, apemat, correo, celular, c.largename ' .
@@ -60,7 +80,7 @@ class alumno extends DB{
             );
         }
         
-        $query = $conn->prepare('CALL registro_alumno(:dni, :fecnac, :nombres, :apepat, :apemat, :apecas, :correo, :celular, :fecha, :entidad, :region, :curso, :ipliego, :pliego, :iuejecutora, :uejecutora, :iestablecimiento, :establecimiento, :ubigeo, :profesion, :reglab, :icondlab, :condlab, :ruc, :tipo, :file, :cod_modular, :pais, :tipo_participante, @mensaje, @statu);');
+        $query = $conn->prepare('CALL registro_alumno(:dni, :fecnac, :nombres, :apepat, :apemat, :apecas, :correo, :celular, :fecha, :entidad, :region, :curso, :ipliego, :pliego, :iuejecutora, :uejecutora, :iestablecimiento, :establecimiento, :ubigeo, :profesion, :reglab, :icondlab, :condlab, :ruc, :tipo, :file, :cod_modular, :pais, :itipo_participante, @mensaje, @statu);');
 
         $query->bindParam(":dni", $dni);
         $query->bindParam(":fecnac", $fecnac);
@@ -93,7 +113,7 @@ class alumno extends DB{
         //EXTRANJERO
         $query->bindParam(":pais", $pais);
         //TIPO DE PARTICIPANTE
-        $query->bindParam(":tipo_participante", $tipo_participante);
+        $query->bindParam(":itipo_participante", $tipo_participante);
 
         try {
             $query->execute();
@@ -112,4 +132,3 @@ class alumno extends DB{
         }
     }
 }
-?>
