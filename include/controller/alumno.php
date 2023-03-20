@@ -80,7 +80,7 @@ class alumno extends DB{
             );
         }
         
-        $query = $conn->prepare('CALL registro_alumno(:dni, :fecnac, :nombres, :apepat, :apemat, :apecas, :correo, :celular, :fecha, :entidad, :region, :curso, :ipliego, :pliego, :iuejecutora, :uejecutora, :iestablecimiento, :establecimiento, :ubigeo, :profesion, :reglab, :icondlab, :condlab, :ruc, :tipo, :file, :cod_modular, :pais, :itipo_participante, @mensaje, @statu);');
+        $query = $conn->prepare('CALL registro_alumno(:dni, :fecnac, :nombres, :apepat, :apemat, :apecas, :correo, :celular, :fecha, :entidad, :region, :curso, :ipliego, :pliego, :iuejecutora, :uejecutora, :iestablecimiento, :destablecimiento, :ubigeo, :iprofesion, :reglab, :icondlab, :condlab, :ruc, :tipo, :file, :cod_modular, :pais, :itipo_participante, @mensaje, @statu);');
 
         $query->bindParam(":dni", $dni);
         $query->bindParam(":fecnac", $fecnac);
@@ -99,9 +99,9 @@ class alumno extends DB{
         $query->bindParam(":iuejecutora", $iuejecutora);
         $query->bindParam(":uejecutora", $uejecutora);
         $query->bindParam(":iestablecimiento", $iestablecimiento);
-        $query->bindParam(":establecimiento", $establecimiento);
+        $query->bindParam(":destablecimiento", $establecimiento);
         $query->bindParam(":ubigeo", $ubigeo);
-        $query->bindParam(":profesion", $profesion);
+        $query->bindParam(":iprofesion", $profesion);
         $query->bindParam(":reglab", $reglab);
         $query->bindParam(":condlab", $condlab);
         $query->bindParam(":icondlab", $icondlab);

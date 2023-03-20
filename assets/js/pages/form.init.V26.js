@@ -1215,8 +1215,6 @@ $(document).ready(function () {
         e.preventDefault();
         if (this.checkValidity && !this.checkValidity()) return;
 
-        //$("#guardar").attr("disabled", true);
-
         var formElement = document.getElementById("frmListCursos");
         var post = new FormData(formElement);
         post.append("function", 'ConsultaCursosParticipantes');
@@ -1259,7 +1257,7 @@ $(document).ready(function () {
                         tabla += "<td>" + item.ejec_fin + "</td>";
                         tabla += "<td>" + item.fecins + "</td>";
                         tabla += "<td>" + badge_estado(item.estado) + "</td>";
-                        tabla += "<td>" + enlace_curso(item.codmoodle, item.estado) + "</td>";
+                        tabla += "<td>" + enlace_curso(item.estado,item.codmoodle) + "</td>";
                         tabla += "<td>" + item.cursodetalle + "</td>";
                         tabla += "</tr>";
                     });
@@ -1284,7 +1282,6 @@ $(document).ready(function () {
                     }
                 });
                 a.buttons().container().appendTo("#table-search_wrapper .col-md-6:eq(0)");
-
                 search_mail.val("");
                 search_doc.val("");
                 search_ape.val("");
