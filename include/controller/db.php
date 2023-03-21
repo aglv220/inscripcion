@@ -13,22 +13,7 @@ class DB{
         $this->password = '';
         $this->charset  = 'utf8mb4';
     }
-    // public function __construct(){
-    //     $this->host     = '10.0.0.46';
-    //     $this->db       = 'ensapadmin_db';
-    //     $this->user     = 'app_ensap';
-    //     $this->password = 'app_ensap123app_ensap';
-    //     $this->charset  = 'utf8mb4';
-    // }
     
-    // public function __construct(){
-    //     $this->host     = '127.0.0.1:3307';
-    //     $this->db       = 'ensapadmin_db';
-    //     $this->user     = 'adminmoodle';
-    //     $this->password = 'P@M#asdTT$MM';
-    //     $this->charset  = 'utf8mb4';
-    // }
-
     function connect(){
         try{
 
