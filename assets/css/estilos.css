@@ -31,3 +31,7 @@
     background-color: transparent;
     box-shadow: none;
 }
+
+.dataTables_scrollHeadInner{
+    width: auto !important;
+}

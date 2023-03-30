@@ -14,13 +14,13 @@ class alumno extends DB{
             $bind_field = "numdoc";
             $bind_value = $nrodoc;  
         }
-
         $query = $this->connect()->prepare("SELECT * FROM ensapadmin_db.vw_consulta_alumno_curso 
-            WHERE cursoyear = YEAR(NOW()) AND " . $bind_field . " = :".$bind_field." AND ( apepat LIKE CONCAT('%', :apepat, '%') OR apemat LIKE CONCAT('%', :apemat, '%') );");
+            WHERE cursoyear = YEAR(NOW()) AND " . $bind_field . " = :".$bind_field." AND ( apepat LIKE CONCAT('%', :apepat, '%') OR apemat LIKE CONCAT('%', :apemat, '%') OR nombres LIKE CONCAT('%', :nombres, '%') );");
 
         $query->bindParam(":".$bind_field, $bind_value);      
         $query->bindParam(":apepat", $apellido);
-        $query->bindParam(":apemat", $apellido);                
+        $query->bindParam(":apemat", $apellido);
+        $query->bindParam(":nombres", $apellido);
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }

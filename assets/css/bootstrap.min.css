@@ -58,7 +58,7 @@ html {
  font-family:sans-serif;
  line-height:1.15;
  -webkit-text-size-adjust:100%;
- -webkit-tap-highlight-color:transparent
+ -webkit-tap-highlight-color:transparent;
 }
 article,
 aside,
@@ -1625,7 +1625,7 @@ pre code {
 .table {
  width:100%;
  margin-bottom:1.5rem;
- color:#6c757d
+ color:#6c757d;
 }
 .table td,
 .table th {
@@ -7858,7 +7858,7 @@ button.bg-purple:hover {
  width:75%!important
 }
 .w-100 {
- width:100%!important
+ width:100%!important;
 }
 .w-auto {
  width:auto!important

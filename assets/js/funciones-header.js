@@ -1,5 +1,22 @@
+function noCopy(e) {
+    if (e.shiftKey || e.ctrlKey || e.altKey) {
+        e.preventDefault();
+    }
+}
+
+function noWhitesSpace(e) {
+    if (e.ctrlKey || e.altKey) {
+        e.preventDefault();
+    } else {
+        var key = e.keyCode;
+        if ( key == 32 ) {
+            e.preventDefault();
+        }
+    }
+}
+
 function solo_texto(e) {
-    especiales = [32];
+    especiales = [32,209,241,225,233,237,243,250,193,201,205,211,218];
     caracteres = ["%"];
     key = e.keyCode || e.which;
     tecla = String.fromCharCode(key).toLowerCase();

@@ -24,16 +24,14 @@
     <link href="<?php echo $CNG->wwwroot; ?>/assets/libs/owl-carousel/owl.theme.css" rel="stylesheet" type="text/css" />-->
     <!-- ANIMATE CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
-    <!-- DATATABLE CSS -->
-    <!--<link href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css">-->
     <!-- Plugins css -->
     <link href="<?php echo $CNG->wwwroot; ?>/assets/libs/datatables/dataTables.bootstrap4.css" rel="stylesheet" type="text/css" />
     <link href="<?php echo $CNG->wwwroot; ?>/assets/libs/datatables/buttons.bootstrap4.css" rel="stylesheet" type="text/css" />
     <link href="<?php echo $CNG->wwwroot; ?>/assets/libs/datatables/responsive.bootstrap4.css" rel="stylesheet" type="text/css" />
     <link href="<?php echo $CNG->wwwroot; ?>/assets/libs/datatables/select.bootstrap4.css" rel="stylesheet" type="text/css" />
     <!-- ESTILO CSS -->
-    <link href="<?php echo $CNG->wwwroot; ?>/assets/css/estilos.css" rel="stylesheet" type="text/css" />
-    <script src="<?php echo $CNG->wwwroot; ?>/assets/js/funciones-headerV2.js"></script>
+    <link href="<?php echo $CNG->wwwroot; ?>/assets/css/estilos.css?v=5" rel="stylesheet" type="text/css" />
+    <script src="<?php echo $CNG->wwwroot; ?>/assets/js/funciones-header.js?v=5"></script>
 </head>
 
 <body>
@@ -93,7 +91,7 @@
                                 <li class="nav-item tippy-tooltip-tab" data-plugin="tippy" data-tippy-placement="top" title="Consulta de cursos a los que me he inscrito">
                                     <a class="nav-link" href="#cursos-inscritos" aria-controls="about" role="tab" data-toggle="tab">
                                         <i class="mdi mdi-book-settings icon-1-2x"></i>
-                                        &nbsp;CURSOS INSCRITOS
+                                        &nbsp;CONSULTA DE CURSOS INSCRITOS
                                     </a>
                                 </li>
                             </ul>
@@ -323,7 +321,7 @@
                                                             <a class="btn btn-primary tippy-tooltip tooltip-style animate__animated animate__pulse animate__infinite infinite" data-plugin="tippy" data-tippy-placement="top" title="Active esta opción solo si usted no trabaja para el Ministerio de Salud y en su lugar trabaja para una empresa del sector privado u otra entidad del estado. <i>[Enable this option only if you do not work for the Ministry of Health and instead work for a private sector company or other state entity]<i>"><i class="fas fa-question"></i></a>
 
                                                             <div class="custom-control custom-switch form-control border-0">
-                                                                <input type="checkbox" class="custom-control-input" id="chkprivado">
+                                                                <input type="checkbox" class="custom-control-input" name="chkprivado" id="chkprivado">
                                                                 <label class="custom-control-label" for="chkprivado">Pertenezco a una Institución Privada u otra Entidad del Estado, por lo cual deseo registrar mis datos laborales manualmente</label>
                                                             </div>
                                                         </div>
@@ -807,37 +805,36 @@
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="card-box">
-                                                <h4 class="header-title">Búsqueda de cursos inscritos</h4>
+                                                <h4 class="header-title">Consulta de Cursos inscritos</h4>
                                                 <p class="sub-header text-primary font-weight-bold">
-                                                    Ingrese los datos solicitados para iniciar la búsqueda de sus Cursos Inscritos
+                                                    Ingrese los datos solicitados y de clic en el Botón <span class="badge bg-success" style="font-size: 0.8rem;"><i class="fa fa-search"></i> Buscar registros</span> para iniciar la búsqueda de los Cursos en los que usted se encuentra inscrito.
                                                 </p>
 
                                                 <form class="parsley-form" id="frmListCursos" action="include/util/getFunctions.php" method="POST">
                                                     <div class="form-row">
                                                         <div class="form-group position-relative col-md-12" id="">
-                                                            <label>¿Ingresar correo registrado para la búsqueda?</label>
-
+                                                            <label>Active esta opción para alternar el <font class="text-danger font-weight-bold">Campo de búsqueda nro. 1(*)</font></label>
                                                             <a class="btn btn-primary tippy-tooltip tooltip-style animate__animated animate__pulse animate__infinite infinite" data-plugin="tippy" data-tippy-placement="top" title="Active esta opción si usted desea colocar su correo en el lugar de su documento de identidad registrado para la inscripción"><i class="fas fa-question"></i></a>
 
                                                             <div class="custom-control custom-switch form-control border-0">
                                                                 <input type="checkbox" class="custom-control-input" id="chkuseemail">
-                                                                <label class="custom-control-label" for="chkuseemail">Deseo colocar mi correo en lugar de mi documento de identidad</label>
+                                                                <label class="custom-control-label" for="chkuseemail"><font class="text-primary">Ha seleccionado: Usar su número de documento registrado para la Consulta</font></label>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="form-row">
                                                         <div class="form-group position-relative col-lg-6 col-sm-12" id="id-search-doc">
-                                                            <label>Documento Registrado</label>
-                                                            <input type="text" class="form-control" data-parsley-minlength="8" maxlength="9" id="search_doc" name="search_doc" onkeypress="return numeros_enteros(event);" placeholder="Documento de Identidad" required>
+                                                            <label>1. Documento Registrado <font class="text-danger font-weight-bold">(*)</font></label>
+                                                            <input type="text" class="form-control" data-parsley-minlength="8" maxlength="9" id="search_doc" name="search_doc" placeholder="Documento de Identidad" onkeypress="return numeros_enteros(event);" onkeydown="return noCopy(event);" required>
                                                         </div>
                                                         <div class="form-group position-relative col-lg-6 col-sm-12" id="id-search-email">
-                                                            <label>Email registrado</label>
-                                                            <input type="email" parsley-type="email" class="form-control" id="search_mail" name="search_mail" placeholder="Correo electrónico" required>
+                                                            <label>1. Email registrado <font class="text-danger font-weight-bold">(*)</font></label>
+                                                            <input type="email" parsley-type="email" class="form-control" id="search_mail" name="search_mail" placeholder="Correo electrónico" onkeydown="return noWhitesSpace(event);" required>
                                                         </div>
                                                         <div class="form-group position-relative col-lg-6 col-sm-12">
-                                                            <label>Apellido Paterno o Materno</label>
+                                                            <label>2. Nombre o Apellido Paterno o Apellido Materno</label>
                                                             <div class="input-group">
-                                                                <input type="text" class="form-control" id="search_ape" name="search_ape" placeholder="Apellido Paterno o Materno" onkeypress="return solo_texto(event);" required>
+                                                                <input type="text" class="form-control" id="search_ape" name="search_ape" placeholder="Nombre o Apellido Paterno o Apellido Materno" onkeypress="return solo_texto(event);" onkeydown="return noCopy(event);" required>
                                                                 <button type="submit" class="btn btn-success" id="btn-search"><i class="fa fa-search"></i> Buscar registros</button>
                                                             </div>
                                                         </div>
@@ -1077,7 +1074,7 @@
     <script src="<?php echo $CNG->wwwroot; ?>/assets/libs/twitter-bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
     <!-- Init js-->
     <script src="<?php echo $CNG->wwwroot; ?>/assets/js/pages/form-pickers.init.js"></script>
-    <script src="<?php echo $CNG->wwwroot; ?>/assets/js/pages/form.init.V26.js"></script>
+    <script src="<?php echo $CNG->wwwroot; ?>/assets/js/pages/form.init.js?v=5"></script>
     <!-- DATATABLE JS -->
     <!--<script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>-->
     <!-- third party js -->
