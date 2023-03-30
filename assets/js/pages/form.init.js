@@ -1197,6 +1197,9 @@ $(document).ready(function () {
             case "CIERRE DE INSCRIPCIÓN":
                 tipo_badge = "warning";
                 break;
+            case "EN FASE DE SELECCIÓN DE ADMITIDOS":
+                tipo_badge = "purple";
+                break;
             case "CURSO FINALIZADO":
                 tipo_badge = "danger";
                 break;
