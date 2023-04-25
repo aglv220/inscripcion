@@ -813,7 +813,7 @@
                                                 <form class="parsley-form" id="frmListCursos" action="include/util/getFunctions.php" method="POST">
                                                     <div class="form-row">
                                                         <div class="form-group position-relative col-md-12" id="">
-                                                            <label>Active esta opción para alternar el <font class="text-danger font-weight-bold">Campo de búsqueda nro. 1(*)</font></label>
+                                                            <label>Active esta opción para alternar el <font class="text-success font-weight-bold">Campo de búsqueda nro. (1)</font></label>
                                                             <a class="btn btn-primary tippy-tooltip tooltip-style animate__animated animate__pulse animate__infinite infinite" data-plugin="tippy" data-tippy-placement="top" title="Active esta opción si usted desea colocar su correo en el lugar de su documento de identidad registrado para la inscripción"><i class="fas fa-question"></i></a>
 
                                                             <div class="custom-control custom-switch form-control border-0">
@@ -821,20 +821,33 @@
                                                                 <label class="custom-control-label" for="chkuseemail"><font class="text-primary">Ha seleccionado: Usar su número de documento registrado para la Consulta</font></label>
                                                             </div>
                                                         </div>
+                                                        <div class="form-group position-relative col-md-12" id="">
+                                                            <font class="text-danger font-weight-bold">(*) Campos requeridos</font>
+                                                        </div>                                             
                                                     </div>
+                                                    
                                                     <div class="form-row">
                                                         <div class="form-group position-relative col-lg-6 col-sm-12" id="id-search-doc">
-                                                            <label>1. Documento Registrado <font class="text-danger font-weight-bold">(*)</font></label>
-                                                            <input type="text" class="form-control" data-parsley-minlength="8" maxlength="9" id="search_doc" name="search_doc" placeholder="Documento de Identidad" onkeypress="return numeros_enteros(event);" onkeydown="return noCopy(event);" required>
+                                                            <label>1. Documento Registrado <font class="text-success font-weight-bold">(1)</font></label> <font class="text-danger font-weight-bold">(*)</font>
+                                                            <input type="text" class="form-control" data-parsley-minlength="8" maxlength="9" id="search_doc" name="search_doc" placeholder="Documento de Identidad" onkeypress="return numeros_enteros(event);" required>
                                                         </div>
                                                         <div class="form-group position-relative col-lg-6 col-sm-12" id="id-search-email">
-                                                            <label>1. Email registrado <font class="text-danger font-weight-bold">(*)</font></label>
+                                                            <label>1. Email registrado <font class="text-success font-weight-bold">(1)</font></label> <font class="text-danger font-weight-bold">(*)</font></label>
                                                             <input type="email" parsley-type="email" class="form-control" id="search_mail" name="search_mail" placeholder="Correo electrónico" onkeydown="return noWhitesSpace(event);" required>
                                                         </div>
                                                         <div class="form-group position-relative col-lg-6 col-sm-12">
-                                                            <label>2. Nombre o Apellido Paterno o Apellido Materno</label>
+                                                            <label>2. Nombres o Apellidos</label> 
+                                                            <font class="text-danger font-weight-bold">(*)</font>
+                                                            <a class="btn btn-success tippy-tooltip tooltip-style-v3 animate__animated animate__pulse animate__infinite infinite" data-plugin="tippy" data-tippy-placement="top" title="<p align='justify'>En este campo puede ingresar los siguientes datos:<br>
+                                                            -Sus Nombre completos.<br>
+                                                            -Sus Nombres y Apellidos completos.<br>
+                                                            -Sus Nombres y Apellidos Paterno.<br>
+                                                            -Sus Apellidos completos.<br>
+                                                            -Solo su Apellido Paterno.<br>
+                                                            -Solo su Apellido Materno.<br></p>"><i class="fas fa-info"></i></a>
+
                                                             <div class="input-group">
-                                                                <input type="text" class="form-control" id="search_ape" name="search_ape" placeholder="Nombre o Apellido Paterno o Apellido Materno" onkeypress="return solo_texto(event);" onkeydown="return noCopy(event);" required>
+                                                                <input type="text" class="form-control" id="search_ape" name="search_ape" placeholder="Nombre o Apellido Paterno o Apellido Materno" onkeypress="return solo_texto(event);"  required>
                                                                 <button type="submit" class="btn btn-success" id="btn-search"><i class="fa fa-search"></i> Buscar registros</button>
                                                             </div>
                                                         </div>

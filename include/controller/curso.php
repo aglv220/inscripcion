@@ -6,7 +6,7 @@ class cursos extends DB{
     
     public function getAllCursos()
     {
-        $query = $this->connect()->prepare("SELECT id, CONCAT(nombre_largo, ' ', DATE_FORMAT(fecha_inicio_ins,'%d de %M'),' - ', DATE_FORMAT(fecha_fin_ins,'%d de %M')) AS curso, fecha_inicio_ins, fecha_fin_ins FROM tbl_curso WHERE date(now()) BETWEEN date(fecha_inicio_ins) AND date(fecha_fin_ins) AND estado = 1;");//AND (curso_libre = 0 OR curso_libre IS NULL)
+        $query = $this->connect()->prepare("SELECT id, CONCAT(nombre_largo, ' ', DATE_FORMAT(fecha_inicio_ins,'%d de %M'),' - ', DATE_FORMAT(fecha_fin_ins,'%d de %M')) AS curso, fecha_inicio_ins, fecha_fin_ins FROM tbl_curso WHERE date(now()) BETWEEN date(fecha_inicio_ins) AND date(fecha_fin_ins) AND estado = 1 AND (curso_tipo_inscripcion = 1 OR curso_tipo_inscripcion = 3);");//AND (curso_libre = 0 OR curso_libre IS NULL)
         $query->execute();
 
         return $query->fetchAll(PDO::FETCH_ASSOC);

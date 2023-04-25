@@ -5,22 +5,31 @@ require_once($CNG->dirroot .'/include/controller/db.php');
 
 class alumno extends DB{
 
-    public function ConsultaCursosParticipantes($nrodoc,$correo,$apellido)
+    public function ConsultaCursosParticipantes($nrodoc,$correo,$datopers)
     {
         if($nrodoc == false){
-            $bind_field = "correo";
-            $bind_value = $correo;
+            $b_campo = "correo";
+            $b_value = $correo;
         } else if($correo == false){
-            $bind_field = "numdoc";
-            $bind_value = $nrodoc;  
+            $b_campo = "numdoc";
+            $b_value = $nrodoc;  
         }
         $query = $this->connect()->prepare("SELECT * FROM ensapadmin_db.vw_consulta_alumno_curso 
-            WHERE cursoyear = YEAR(NOW()) AND " . $bind_field . " = :".$bind_field." AND ( apepat LIKE CONCAT('%', :apepat, '%') OR apemat LIKE CONCAT('%', :apemat, '%') OR nombres LIKE CONCAT('%', :nombres, '%') );");
+            WHERE cursoyear = YEAR(NOW()) AND " . $b_campo . " = :".$b_campo." AND ( 
+            apepat LIKE CONCAT('%', :datopers_1, '%') 
+            OR apemat LIKE CONCAT('%', :datopers_2, '%') 
+            OR nombres LIKE CONCAT('%', :datopers_3, '%') 
+            OR CONCAT(nombres,' ',apepat,' ',apemat) LIKE CONCAT('%', :datopers_4, '%') 
+            OR CONCAT(nombres,' ',apepat) LIKE CONCAT('%', :datopers_5, '%') 
+            OR CONCAT(apepat,' ',apemat) LIKE CONCAT('%', :datopers_6, '%') );");
 
-        $query->bindParam(":".$bind_field, $bind_value);      
-        $query->bindParam(":apepat", $apellido);
-        $query->bindParam(":apemat", $apellido);
-        $query->bindParam(":nombres", $apellido);
+        $query->bindParam(":".$b_campo, $b_value);      
+        $query->bindParam(":datopers_1", $datopers);
+        $query->bindParam(":datopers_2", $datopers);
+        $query->bindParam(":datopers_3", $datopers);
+        $query->bindParam(":datopers_4", $datopers);
+        $query->bindParam(":datopers_5", $datopers);
+        $query->bindParam(":datopers_6", $datopers);
         $query->execute();
         return $query->fetchAll(PDO::FETCH_ASSOC);
     }

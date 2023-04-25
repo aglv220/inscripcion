@@ -78,6 +78,34 @@ $(document).ready(function () {
     //$(".msg-aviso").hide();
 
     /******** EVENTOS DE CONTROLES *******/
+    $("#search_doc").on("paste", function (event) {
+        event.preventDefault();
+        thistxt = $(this);
+        clipboarddata = window.event.clipboardData.getData('text');
+        if (!isNaN(parseFloat(clipboarddata)) && isFinite(clipboarddata)) {
+            thistxt.val(clipboarddata);
+        }
+    });
+
+    $("#search_ape").on("paste", function (event) {
+        event.preventDefault();
+        thistxt = $(this);
+        clipboarddata = window.event.clipboardData.getData('text');
+        regex = new RegExp('[^a-zA-Z]');
+        if (!regex.test(clipboarddata)) {
+            thistxt.val(clipboarddata);
+        }
+    });
+
+    $("#search_ape").keyup(function () {
+        $(this).val($(this).val().toUpperCase());
+    });
+
+    $("#search_doc, #search_ape").on('keypress', function (e) {
+        if (e.which == 13) {
+            $frmuser.submit();
+        }
+    });
 
     $('.select2').on('select2:open', function (e) {
         $('.select2-dropdown').hide();
