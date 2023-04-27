@@ -9,14 +9,21 @@ function noWhitesSpace(e) {
         e.preventDefault();
     } else {
         var key = e.keyCode;
-        if ( key == 32 ) {
+        if (key == 32) {
             e.preventDefault();
         }
     }
 }
 
+function preventWhiteSpace(e) {
+    var key = e.keyCode;
+    if (key == 32) {
+        e.preventDefault();
+    }
+}
+
 function solo_texto(e) {
-    especiales = [32,209,241,225,233,237,243,250,193,201,205,211,218];
+    especiales = [32, 209, 241, 225, 233, 237, 243, 250, 193, 201, 205, 211, 218];
     caracteres = ["%"];
     key = e.keyCode || e.which;
     tecla = String.fromCharCode(key).toLowerCase();

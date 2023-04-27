@@ -41,7 +41,23 @@ $(document).ready(function () {
     var div_search_doc = $('#id-search-doc');
     var div_search_email = $('#id-search-email');
 
-    //$('#table-search').DataTable();
+    var datatable_cursos_ins = $("#table-search").DataTable({
+        responsive: true,
+        scrollY: "600px",
+        scrollX: !0,
+        scrollCollapse: !0,
+        lengthMenu: [[10, 20, 30], [10, 20, 30]],
+        iDisplayLength: 10,
+        language: {
+            paginate: {
+                previous: "<i class='mdi mdi-chevron-left'>",
+                next: "<i class='mdi mdi-chevron-right'>"
+            }
+        },
+        drawCallback: function () {
+            $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
+        }
+    });
 
     /******** DATOS POR DEFECTO *******/
     //BUSQUEDA DE INSCRIPCIONES
@@ -78,12 +94,23 @@ $(document).ready(function () {
     //$(".msg-aviso").hide();
 
     /******** EVENTOS DE CONTROLES *******/
+
+    search_mail.on("paste", function (event) {
+        event.preventDefault();
+        thistxt = $(this);
+        clipboarddata = window.event.clipboardData.getData('text');
+        var RegExp_1 = /^$|\s+/;  
+        if (!RegExp_1.test(clipboarddata)) {
+            thistxt.val($.trim(clipboarddata));
+        }
+    });
+
     $("#search_doc").on("paste", function (event) {
         event.preventDefault();
         thistxt = $(this);
         clipboarddata = window.event.clipboardData.getData('text');
         if (!isNaN(parseFloat(clipboarddata)) && isFinite(clipboarddata)) {
-            thistxt.val(clipboarddata);
+            thistxt.val($.trim(clipboarddata));
         }
     });
 
@@ -91,9 +118,18 @@ $(document).ready(function () {
         event.preventDefault();
         thistxt = $(this);
         clipboarddata = window.event.clipboardData.getData('text');
-        regex = new RegExp('[^a-zA-Z]');
-        if (!regex.test(clipboarddata)) {
+        //regex = new RegExp('[^a-zA-Z]');
+
+        //var RegExpression = /^[a-zA-Z\s]*$/; 
+        //var RegExpression = /^[ñA-Za-z _]*[ñA-Za-z][ñA-Za-z _]*$/;
+        //var RegExpression = /^[a-zA-Z\u00F1\u00D1]+$/;        
+        //var RegExp_2 = /^[a-zA-Z\u00F1\u00D1]+$/;       
+        /*if (!regex.test(clipboarddata)) {
             thistxt.val(clipboarddata);
+        }*/
+        var RegExp_1 = /^[a-zA-ZÀ-ú\s]*$/;
+        if (RegExp_1.test(clipboarddata)) {
+            thistxt.val($.trim(clipboarddata));
         }
     });
 
@@ -1279,11 +1315,36 @@ $(document).ready(function () {
         e.preventDefault();
         if (this.checkValidity && !this.checkValidity()) return;
 
-        var formElement = document.getElementById("frmListCursos");
+        /*var formElement = document.getElementById("frmListCursos");
         var post = new FormData(formElement);
-        post.append("function", 'ConsultaCursosParticipantes');
+        post.append("function", 'ConsultaCursosParticipantes');*/
 
-        $.ajax({
+        var form_data = $('#frmListCursos').serializeArray();
+        form_data.push({name:"function",value:"ConsultaCursosParticipantes"})
+
+        datatable_cursos_ins.destroy();
+        datatable_cursos_ins = inicializar_dtable("#table-search", form_data, function () {
+            msg_alerta("info", "Buscando información");
+        }, function (data) {
+            Swal.close();
+            if(data.responseText == "[]"){
+                Swal.fire({
+                    title: "No se encontró información",
+                    text: "Los datos ingresados no retornaron resultados",
+                    type: "error",
+                    confirmButtonClass: "btn btn-confirm mt-2"
+                }).then((result) => {
+                    if (result) {
+                        Swal.close();
+                    }
+                });
+            }            
+            search_mail.val("");
+            search_doc.val("");
+            search_ape.val("");
+        }, ['NOMCURSO', 'CURSOYEAR', 'CURSOTIPO', 'FINIINS', 'FFININS', 'FINIEJE', 'FFINEJE', 'FREGINS', 'FASECURSO', 'LINKCURSO', 'DETCURSO']);
+
+        /*$.ajax({
             type: 'POST',
             url: $(this).attr('action'),
             data: post,
@@ -1314,6 +1375,7 @@ $(document).ready(function () {
                     $.each(data, function (i, item) {
                         tabla += "<tr>";
                         tabla += "<td>" + item.curso + "</td>";
+                        tabla += "<td>" + item.cursoyear + "</td>";
                         tabla += "<td>" + item.cursotipo + "</td>";
                         tabla += "<td>" + item.ins_inicio + "</td>";
                         tabla += "<td>" + item.ins_fin + "</td>";
@@ -1330,11 +1392,15 @@ $(document).ready(function () {
                 $("#bodytable").html(tabla);
                 var a = $("#table-search").DataTable({
                     responsive: true,
-                    lengthChange: !1,
-                    scrollY: "400px",
+                    //lengthChange: !1,
+                    scrollY: "800px",//400px
                     scrollX: !0,
                     scrollCollapse: !0,
-                    paging: !1,
+                    //paging: !1,
+                    lengthMenu: [[10, 20, 30], [10, 20, 30]],
+                    //order: [[1, 'desc']],
+                    //'columnDefs' : [{ 'visible': false, 'targets': [0] }],
+                    iDisplayLength: 10,
                     language: {
                         paginate: {
                             previous: "<i class='mdi mdi-chevron-left'>",
@@ -1350,7 +1416,7 @@ $(document).ready(function () {
                 search_doc.val("");
                 search_ape.val("");
             }
-        });
+        });*/
     })
 
 });

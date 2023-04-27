@@ -69,7 +69,13 @@
                             <div class="page-title-box">
                                 <div class="page-title-right">
                                     <ol class="breadcrumb m-0">
-                                        <li class="breadcrumb-item"><a href="javascript: void(0);">ENSAP</a></li>
+                                        <li>
+                                            <a class="btn btn-purple tippy-tooltip tooltip-style animate__animated animate__heartBeat animate__slow animate__infinite infinite" style="margin-top: -0.25rem" data-plugin="tippy" data-tippy-placement="left" title="<p align='justify'>Estimado participante, lo invitamos a probar la nueva sección que hemos preparado para usted, la puede encontrar en esta misma página, con el nombre de: <br><b><center><i class='mdi mdi-book-settings icon-1-2x text-white'></i> CONSULTA DE CURSOS INSCRITOS</center></b></p>"><i class="fas fa-eye"></i></a>
+                                            &nbsp;&nbsp;
+                                        </li>
+                                        <li class="breadcrumb-item">
+                                            <a href="javascript: void(0);">ENSAP</a>
+                                        </li>
                                         <li class="breadcrumb-item active">Inscripciones</li>
                                     </ol>
                                 </div>
@@ -807,7 +813,7 @@
                                             <div class="card-box">
                                                 <h4 class="header-title">Consulta de Cursos inscritos</h4>
                                                 <p class="sub-header text-primary font-weight-bold">
-                                                    Ingrese los datos solicitados y de clic en el Botón <span class="badge bg-success" style="font-size: 0.8rem;"><i class="fa fa-search"></i> Buscar registros</span> para iniciar la búsqueda de los Cursos en los que usted se encuentra inscrito.
+                                                    Complete todos los datos solicitados en pantalla y luego de clic en el Botón <span class="badge bg-success" style="font-size: 0.8rem;"><i class="fa fa-search"></i> Buscar registros</span> o presione la tecla <span class="badge bg-dark" style="font-size: 0.8rem;">ENTER ↵</span> de su teclado para iniciar la búsqueda de todos los Cursos que usted se haya inscrito en esta plataforma.
                                                 </p>
 
                                                 <form class="parsley-form" id="frmListCursos" action="include/util/getFunctions.php" method="POST">
@@ -818,36 +824,38 @@
 
                                                             <div class="custom-control custom-switch form-control border-0">
                                                                 <input type="checkbox" class="custom-control-input" id="chkuseemail">
-                                                                <label class="custom-control-label" for="chkuseemail"><font class="text-primary">Ha seleccionado: Usar su número de documento registrado para la Consulta</font></label>
+                                                                <label class="custom-control-label" for="chkuseemail">
+                                                                    <font class="text-primary">Ha seleccionado: Usar su número de documento registrado para la Consulta</font>
+                                                                </label>
                                                             </div>
                                                         </div>
-                                                        <div class="form-group position-relative col-md-12" id="">
+                                                        <!--<div class="form-group position-relative col-md-12">
                                                             <font class="text-danger font-weight-bold">(*) Campos requeridos</font>
-                                                        </div>                                             
+                                                        </div>-->
                                                     </div>
-                                                    
                                                     <div class="form-row">
                                                         <div class="form-group position-relative col-lg-6 col-sm-12" id="id-search-doc">
-                                                            <label>1. Documento Registrado <font class="text-success font-weight-bold">(1)</font></label> <font class="text-danger font-weight-bold">(*)</font>
+                                                            <label>1. Documento Registrado <font class="text-success font-weight-bold">(1)</font></label>
+                                                            <font class="text-danger font-weight-bold">(requerido)</font>
                                                             <input type="text" class="form-control" data-parsley-minlength="8" maxlength="9" id="search_doc" name="search_doc" placeholder="Documento de Identidad" onkeypress="return numeros_enteros(event);" required>
                                                         </div>
                                                         <div class="form-group position-relative col-lg-6 col-sm-12" id="id-search-email">
-                                                            <label>1. Email registrado <font class="text-success font-weight-bold">(1)</font></label> <font class="text-danger font-weight-bold">(*)</font></label>
-                                                            <input type="email" parsley-type="email" class="form-control" id="search_mail" name="search_mail" placeholder="Correo electrónico" onkeydown="return noWhitesSpace(event);" required>
+                                                            <label>1. Email registrado <font class="text-success font-weight-bold">(1)</font></label>
+                                                            <font class="text-danger font-weight-bold">(requerido)</font></label>
+                                                            <input type="email" parsley-type="email" class="form-control" id="search_mail" name="search_mail" placeholder="Correo electrónico" onkeydown="return preventWhiteSpace(event);" required>
                                                         </div>
                                                         <div class="form-group position-relative col-lg-6 col-sm-12">
-                                                            <label>2. Nombres o Apellidos</label> 
-                                                            <font class="text-danger font-weight-bold">(*)</font>
+                                                            <label>2. Nombres o Apellidos</label>
+                                                            <font class="text-danger font-weight-bold">(requerido)</font>
                                                             <a class="btn btn-success tippy-tooltip tooltip-style-v3 animate__animated animate__pulse animate__infinite infinite" data-plugin="tippy" data-tippy-placement="top" title="<p align='justify'>En este campo puede ingresar los siguientes datos:<br>
-                                                            -Sus Nombre completos.<br>
+                                                            -Sus Nombres completos.<br>
                                                             -Sus Nombres y Apellidos completos.<br>
                                                             -Sus Nombres y Apellidos Paterno.<br>
                                                             -Sus Apellidos completos.<br>
                                                             -Solo su Apellido Paterno.<br>
                                                             -Solo su Apellido Materno.<br></p>"><i class="fas fa-info"></i></a>
-
                                                             <div class="input-group">
-                                                                <input type="text" class="form-control" id="search_ape" name="search_ape" placeholder="Nombre o Apellido Paterno o Apellido Materno" onkeypress="return solo_texto(event);"  required>
+                                                                <input type="text" class="form-control" id="search_ape" name="search_ape" placeholder="Nombre o Apellido Paterno o Apellido Materno" onkeypress="return solo_texto(event);" required>
                                                                 <button type="submit" class="btn btn-success" id="btn-search"><i class="fa fa-search"></i> Buscar registros</button>
                                                             </div>
                                                         </div>
@@ -861,13 +869,14 @@
                                                                 <thead id="headtable">
                                                                     <tr>
                                                                         <th>Nombre del curso</th>
+                                                                        <th>Año</th>
                                                                         <th>Tipo de curso</th>
                                                                         <th>Inicio de Inscripción</th>
                                                                         <th>Cierre de Inscripción</th>
                                                                         <th>Inicio del Curso</th>
                                                                         <th>Cierre del Curso</th>
                                                                         <th>Registro de Inscripción</th>
-                                                                        <th>Estado del Curso</th>
+                                                                        <th>Fase del Curso</th>
                                                                         <th>Enlace al Curso</th>
                                                                         <th>Consideraciones del Curso</th>
                                                                     </tr>
@@ -1085,6 +1094,10 @@
     <script src="<?php echo $CNG->wwwroot; ?>/assets/libs/sweetalert/sweetalert2.min.js"></script>
     <script src="<?php echo $CNG->wwwroot; ?>/assets/libs/jquery-mask-plugin/jquery.mask.min.js"></script>
     <script src="<?php echo $CNG->wwwroot; ?>/assets/libs/twitter-bootstrap-wizard/jquery.bootstrap.wizard.min.js"></script>
+
+    <!-- FOOTER FUNCTIONS JS -->
+    <script src="<?php echo $CNG->wwwroot; ?>/assets/js/pages/footer-functions.js?v=1"></script>
+
     <!-- Init js-->
     <script src="<?php echo $CNG->wwwroot; ?>/assets/js/pages/form-pickers.init.js"></script>
     <script src="<?php echo $CNG->wwwroot; ?>/assets/js/pages/form.init.js?v=5"></script>

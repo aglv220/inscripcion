@@ -1,5 +1,5 @@
 $(document).ready(function(){
-    var a = $("#table-search").DataTable({
+    /*var a = $("#table-search").DataTable({
         //lengthChange:!1,
         //buttons:["copy"],
         responsive: true,
@@ -15,7 +15,7 @@ $(document).ready(function(){
         drawCallback:function(){
             $(".dataTables_paginate > .pagination").addClass("pagination-rounded")
         }
-    });
+    });*/
     $("#selection-datatable").DataTable({
         select:{
             style:"multi"

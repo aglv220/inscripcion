@@ -14,14 +14,16 @@ class alumno extends DB{
             $b_campo = "numdoc";
             $b_value = $nrodoc;  
         }
+        //cursoyear = YEAR(NOW()) AND 
         $query = $this->connect()->prepare("SELECT * FROM ensapadmin_db.vw_consulta_alumno_curso 
-            WHERE cursoyear = YEAR(NOW()) AND " . $b_campo . " = :".$b_campo." AND ( 
+            WHERE " . $b_campo . " = :".$b_campo." AND ( 
             apepat LIKE CONCAT('%', :datopers_1, '%') 
             OR apemat LIKE CONCAT('%', :datopers_2, '%') 
             OR nombres LIKE CONCAT('%', :datopers_3, '%') 
             OR CONCAT(nombres,' ',apepat,' ',apemat) LIKE CONCAT('%', :datopers_4, '%') 
             OR CONCAT(nombres,' ',apepat) LIKE CONCAT('%', :datopers_5, '%') 
-            OR CONCAT(apepat,' ',apemat) LIKE CONCAT('%', :datopers_6, '%') );");
+            OR CONCAT(apepat,' ',apemat) LIKE CONCAT('%', :datopers_6, '%') ) 
+            ORDER BY cursoyear DESC, idcurso DESC;");
 
         $query->bindParam(":".$b_campo, $b_value);      
         $query->bindParam(":datopers_1", $datopers);

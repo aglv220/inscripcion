@@ -15,13 +15,91 @@ switch ($_POST['function']) {
         $data = $a->ConsultaCursosParticipantes($nrodoc, $email, $apellido);
 
         $validar_data = count($data) > 0 ? true : false;
+        $DATA_ARRAY = array();
         if ($validar_data) {
-            header('Content-type: application/json; charset=utf-8');
-            echo json_encode($data, JSON_FORCE_OBJECT);
-        } else {
-            header('Content-type: application/json; charset=utf-8');
-            echo json_encode($validar_data, JSON_FORCE_OBJECT);
-        }
+            foreach ($data as $row) {
+                $nomcurso = $row["curso"];
+                $codmoodle = $row["codmoodle"];
+                $yearcurso = $row["cursoyear"];
+                $tipocurso = $row["cursotipo"];
+                $finiins = $row["ins_inicio"];
+                $ffinins = $row["ins_fin"];
+                $finieje = $row["ejec_inicio"];
+                $ffineje = $row["ejec_fin"];
+                $fregins = $row["fecins"];
+                $fasecurso = $row["estado"];
+                $detallecurso = $row["cursodetalle"];
+
+                //FASE DEL CURSO
+                $badge_fase = "<span class='badge rounded-pill ";
+                $tipo_badge = "dark";
+                switch ($fasecurso) {
+                    case "CURSO EN EJECUCIÓN":
+                        $tipo_badge = "success";
+                        break;
+                    case "EN FASE DE INSCRIPCIÓN":
+                        $tipo_badge = "primary";
+                        break;
+                    case "CIERRE DE INSCRIPCIÓN":
+                        $tipo_badge = "warning";
+                        break;
+                    case "EN FASE DE SELECCIÓN DE ADMITIDOS":
+                        $tipo_badge = "purple";
+                        break;
+                    case "CURSO FINALIZADO":
+                        $tipo_badge = "danger";
+                        break;
+                }
+                $badge_fase .= " bg-" . $tipo_badge . "'>" . $fasecurso . "</span>";
+
+                //ENLACE AL CURSO
+                $enlace_curso = '<a class="badge badge-outline-purple rounded-pill"';
+                if ($fasecurso == "CURSO EN EJECUCIÓN") {
+                    if ($codmoodle != "" && $codmoodle != null) {
+                        $enlace_plataforma = 'http://pees.minsa.gob.pe/course/view.php?id=';
+                        $enlace_curso .= ' href="' . $enlace_plataforma . $codmoodle . '" target="_blank">IR AL CURSO';
+                    } else {
+                        $enlace_curso .= '>NO ENCONTRADO';
+                    }
+                } else {
+                    $enlace_curso .= '>NO DISPONIBLE';
+                }
+                $enlace_curso .= '</a>';
+
+                //DETALLE DEL CURSO
+                $badge_detalle = "";
+                if ($detallecurso == "NINGUNA") {
+                    $badge_detalle = "<span class='badge rounded-pill bg-danger' >" . $detallecurso . "</span>";
+                } else {
+                    $badge_detalle = $detallecurso;
+                }
+
+                $CURSOS_INSCRITOS = [
+                    "NOMCURSO" => $nomcurso,
+                    "CURSOYEAR" => $yearcurso,
+                    "CURSOTIPO" => $tipocurso,
+                    "FINIINS" => $finiins,
+                    "FFININS" => $ffinins,
+                    "FINIEJE" => $finieje,
+                    "FFINEJE" => $ffineje,
+                    "FREGINS" => $fregins,
+                    "FASECURSO" => $badge_fase,
+                    "LINKCURSO" => $enlace_curso,
+                    "DETCURSO" => $badge_detalle,
+                ];
+                array_push($DATA_ARRAY, $CURSOS_INSCRITOS);
+            }
+
+            //header('Content-type: application/json; charset=utf-8');
+            //echo json_encode($data, JSON_FORCE_OBJECT);
+            
+            //echo json_encode($DATA_ARRAY);
+        } //else {
+            //header('Content-type: application/json; charset=utf-8');
+            //echo json_encode($validar_data, JSON_FORCE_OBJECT);
+            //echo json_encode($validar_data);
+        //}
+        echo json_encode($DATA_ARRAY);
         break;
 
     case 'getUbigeoDet':
