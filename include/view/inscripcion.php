@@ -1,6 +1,6 @@
+<?php date_default_timezone_set('America/Lima'); ?>
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="es">
 <head>
     <meta charset="utf-8" />
     <title>Inscripciones - Escuela Nacional de Salud Pública</title>

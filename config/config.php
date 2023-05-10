@@ -1,5 +1,5 @@
 <?php 
-
+date_default_timezone_set('America/Lima');
 unset($CNG);
 global $CNG;
 $CNG = new stdClass();

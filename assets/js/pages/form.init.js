@@ -99,7 +99,7 @@ $(document).ready(function () {
         event.preventDefault();
         thistxt = $(this);
         clipboarddata = window.event.clipboardData.getData('text');
-        var RegExp_1 = /^$|\s+/;  
+        var RegExp_1 = /^$|\s+/;
         if (!RegExp_1.test(clipboarddata)) {
             thistxt.val($.trim(clipboarddata));
         }
@@ -748,6 +748,11 @@ $(document).ready(function () {
                             $("#nombres").val(data.nombres);
                             $("#apepat").val(data.apepat);
                             $("#apemat").val(data.apemat);
+
+                            if (data.apemat == "" || data.apemat == null || data.apemat == "SIN DATOS") {
+                                $("#apemat").prop("required", false);
+                            }
+
                             $("#apecas").val(data.apecas);
 
                             //DIV PAIS
@@ -1320,14 +1325,14 @@ $(document).ready(function () {
         post.append("function", 'ConsultaCursosParticipantes');*/
 
         var form_data = $('#frmListCursos').serializeArray();
-        form_data.push({name:"function",value:"ConsultaCursosParticipantes"})
+        form_data.push({ name: "function", value: "ConsultaCursosParticipantes" })
 
         datatable_cursos_ins.destroy();
         datatable_cursos_ins = inicializar_dtable("#table-search", form_data, function () {
             msg_alerta("info", "Buscando información");
         }, function (data) {
             Swal.close();
-            if(data.responseText == "[]"){
+            if (data.responseText == "[]") {
                 Swal.fire({
                     title: "No se encontró información",
                     text: "Los datos ingresados no retornaron resultados",
@@ -1338,7 +1343,7 @@ $(document).ready(function () {
                         Swal.close();
                     }
                 });
-            }            
+            }
             search_mail.val("");
             search_doc.val("");
             search_ape.val("");
