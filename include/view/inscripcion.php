@@ -69,10 +69,10 @@
                             <div class="page-title-box">
                                 <div class="page-title-right">
                                     <ol class="breadcrumb m-0">
-                                        <li>
+                                        <?php /*<li>
                                             <a class="btn btn-purple tippy-tooltip tooltip-style animate__animated animate__heartBeat animate__slow animate__infinite infinite" style="margin-top: -0.25rem" data-plugin="tippy" data-tippy-placement="left" title="<p align='justify'>Estimado participante, lo invitamos a probar la nueva sección que hemos preparado para usted, la puede encontrar en esta misma página, con el nombre de: <br><b><center><i class='mdi mdi-book-settings icon-1-2x text-white'></i> CONSULTA DE CURSOS INSCRITOS</center></b></p>"><i class="fas fa-eye"></i></a>
                                             &nbsp;&nbsp;
-                                        </li>
+                                        </li> */ ?>
                                         <li class="breadcrumb-item">
                                             <a href="javascript: void(0);">ENSAP</a>
                                         </li>

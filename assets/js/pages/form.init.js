@@ -603,6 +603,9 @@ $(document).ready(function () {
             });
         } else {
             $('div[id^="crd"]').collapse("hide");
+            //OCULTAR MENSAJE DE AVISO
+            $(".msg-aviso").html("");
+            $(".msg-aviso").hide();
         }
     })
 
